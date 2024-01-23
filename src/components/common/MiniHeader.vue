@@ -3,7 +3,8 @@
         <div class="container">
             <v-toolbar density="compact" border :elevation="8" theme="dark" with-background>
                 <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-                <v-toolbar-title></v-toolbar-title>
+                <img class="ml-3" :src="require('@/assets/mini_small.png')" height="40" />
+                <v-toolbar-title>미니 기여어</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn icon>
                     <v-icon>mdi-reply</v-icon>
@@ -12,7 +13,8 @@
         </div>
         <v-navigation-drawer v-model="drawer" color="#424242">
             <v-list>
-                <v-list-item title="My Application" subtitle="Vuetify"></v-list-item>
+                <v-list-item class="mb-2" title="미니 기여어"
+                    :prepend-avatar="require('@/assets/mini_profile.png')"></v-list-item>
                 <v-divider></v-divider>
                 <v-list-item v-for="(item, index) in menuItems" :key="index" :prepend-icon="item.icon" :to="item.link"
                     :title="item.title" @click="navigate(item)"
