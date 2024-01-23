@@ -27,8 +27,8 @@ div {
 
   .sns {
     color: #fff;
-    font-size: 40px;
-    padding: 10px;
+    font-size: 37px;
+    padding: 20px;
 
     &:hover {
       color: #888;
@@ -40,6 +40,7 @@ div {
   span {
     font-size: 14px;
     display: block;
+    height: 20px;
     margin-top: 20px;
     color: #fff;
   }
