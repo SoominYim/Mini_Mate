@@ -44,6 +44,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.v-spacer {
+    flex-grow: 0 !important;
+}
+
 .container {
     background-color: none;
     height: 100px;

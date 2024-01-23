@@ -36,10 +36,10 @@ export default {
 #footer {
   position: fixed;
   width: 100%;
-  height: 150px;
+  height: 100px;
   box-sizing: border-box;
   background: #333;
-  padding: 30px;
+  padding: 15px 30px 30px 30px;
   bottom: 0;
   left: 0;
 }
