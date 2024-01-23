@@ -28,7 +28,7 @@ div {
   .sns {
     color: #fff;
     font-size: 20px;
-    padding: 10px;
+    padding: 0 10px;
 
     &:hover {
       color: #888;

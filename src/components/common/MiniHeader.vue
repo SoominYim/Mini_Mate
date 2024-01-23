@@ -1,15 +1,13 @@
 <template>
-    <div class="container">
-        <v-toolbar density="compact" border :elevation="8" theme="dark" with-background>
-            <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-            <img class="ml-3" :src="require('@/assets/mini_small.png')" height="40" />
-            <v-toolbar-title>미니 기여어</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn icon>
-                <v-icon>mdi-reply</v-icon>
-            </v-btn>
-        </v-toolbar>
-    </div>
+    <v-toolbar density="compact" border :elevation="8" theme="dark" with-background fixed app>
+        <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+        <img class="ml-3" :src="require('@/assets/mini_small.png')" height="40" />
+        <v-toolbar-title>미니 기여어</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon>
+            <v-icon>mdi-reply</v-icon>
+        </v-btn>
+    </v-toolbar>
     <v-navigation-drawer v-model="drawer" color="#424242">
         <v-list>
             <v-list-item class="mb-2" title="미니 기여어" :prepend-avatar="require('@/assets/mini_profile.png')"></v-list-item>
@@ -27,8 +25,9 @@ export default {
         return {
             drawer: false,
             menuItems: [
-                { icon: 'mdi-food', link: '/today-lunch', title: '뭐 먹 지' },
-                { icon: 'mdi-coffee-outline', link: '/today-lunch/coffee', title: '커 피 사 줘' },
+                { icon: 'mdi-home', link: '/', title: '홈' },
+                { icon: 'mdi-food', link: '/lunch', title: '뭐 먹 지' },
+                { icon: 'mdi-coffee', link: '/coffee', title: '커 피 사 줘' },
             ],
         };
     },
@@ -43,13 +42,6 @@ export default {
 <style lang="scss" scoped>
 .v-spacer {
     flex-grow: 0 !important;
-}
-
-.container {
-    background-color: none;
-    height: 100px;
-    width: 100vw;
-    position: relative;
 }
 
 .v-list-item--active {

@@ -1,15 +1,11 @@
 <template>
   <v-app>
-    <div id="header">
+    <div id="header" fixed>
       <mini-header></mini-header>
     </div>
-    <div id="content">
-      <v-main>
-        <router-view />
-        asd <br>
-        asd
-      </v-main>
-    </div>
+    <v-main>
+      <router-view />
+    </v-main>
     <div id="footer">
       <mini-footer></mini-footer>
     </div>
@@ -35,8 +31,12 @@ export default {
 @import "@/css/common/reset.css";
 
 
+#content {
+  height: 40%;
+}
+
 #footer {
-  position: absolute;
+  position: relative;
   width: 100%;
   height: 45px;
   box-sizing: border-box;
