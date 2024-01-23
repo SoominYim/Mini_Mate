@@ -22,13 +22,13 @@ export default {
 
 <style lang="scss" scoped>
 div {
-  height: 100px;
+  height: 40px;
   text-align: center;
 
   .sns {
     color: #fff;
-    font-size: 37px;
-    padding: 20px;
+    font-size: 20px;
+    padding: 10px;
 
     &:hover {
       color: #888;
@@ -38,10 +38,10 @@ div {
   }
 
   span {
-    font-size: 14px;
+    font-size: 10px;
     display: block;
-    height: 20px;
-    margin-top: 20px;
+    height: 10px;
+    margin-top: 6px;
     color: #fff;
   }
 }

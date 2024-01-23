@@ -6,6 +6,8 @@
     <div id="content">
       <v-main>
         <router-view />
+        asd <br>
+        asd
       </v-main>
     </div>
     <div id="footer">
@@ -30,16 +32,16 @@ export default {
 }
 </script>
 <style lang="scss">
-@import "@/css/reset.css";
+@import "@/css/common/reset.css";
 
 
 #footer {
-  position: fixed;
+  position: absolute;
   width: 100%;
-  height: 100px;
+  height: 45px;
   box-sizing: border-box;
   background: #333;
-  padding: 15px 30px 30px 30px;
+  padding-top: 3.5px;
   bottom: 0;
   left: 0;
 }
