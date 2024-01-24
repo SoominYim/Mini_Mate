@@ -8,8 +8,14 @@
         </div>
         <div class="weather-box">
           <div class="temp">{{ weather.main.temp }}°</div>
+          <v-img
+            :width="100"
+            :aspect-ratio="1"
+            class="mx-auto"
+            cover
+            :src="`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`"
+          ></v-img>
           <div class="weather">{{ weather.weather[0].main }}</div>
-          <div></div>
         </div>
       </div>
     </main>
