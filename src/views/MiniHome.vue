@@ -3,11 +3,11 @@
     <main>
       <div class="weather-wrap" v-if="typeof weather.main != 'undefined'">
         <div class="location-box">
-          <div class="location">{{ weather.name }}, {{ weather.sys.country }}</div>
+          <div class="location">서울</div>
           <div class="date">{{ dateBuilder() }}</div>
         </div>
         <div class="weather-box">
-          <div class="temp">{{ weather.main.temp }}℃</div>
+          <div class="temp">{{ weather.main.temp }}°</div>
           <div class="weather">{{ weather.weather[0].main }}</div>
           <div></div>
         </div>
@@ -24,27 +24,13 @@ export default {
     return {
       url_base: "https://api.openweathermap.org/data/2.5/",
       weather: {},
-      months: [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ],
-      days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+      days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
     };
   },
   setup() {},
   created() {},
   mounted() {
-    console.log(process.env);
     let fetchUrl = `${this.url_base}weather?q=seoul&units=metric&APPID=${process.env.VUE_APP_WEATHER_API_KEY}`;
     fetch(fetchUrl)
       .then((res) => {
@@ -66,20 +52,21 @@ export default {
       let date = d.getDate();
       let month = this.months[d.getMonth()];
       let year = d.getFullYear();
-      return `${day} ${date} ${month} ${year}`;
+      return `${year}년 ${month} ${date}일 ${day} `;
     },
   },
 };
 </script>
 <style scoped>
 #main {
+  height: 100%;
   background-image: url("../assets/cold-bg.jpg");
   background-size: cover;
   background-position: bottom;
   transition: 0.4s;
   font-family: "montserrat", sans-serif;
   main {
-    min-height: 100vh;
+    height: 100%;
     padding: 25px;
     background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75));
   }
