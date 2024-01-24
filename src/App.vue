@@ -13,23 +13,22 @@
 </template>
 
 <script>
-import MiniFooter from './components/common/MiniFooter.vue';
-import MiniHeader from './components/common/MiniHeader.vue';
+import MiniFooter from "./components/common/MiniFooter.vue";
+import MiniHeader from "./components/common/MiniHeader.vue";
+
 export default {
-  name: 'App',
+  name: "App",
   components: {
     MiniFooter,
     MiniHeader,
-  }
-  ,
+  },
   data: () => ({
     //
   }),
-}
+};
 </script>
 <style lang="scss">
 @import "@/css/common/reset.css";
-
 
 #content {
   height: 40%;
