@@ -34,7 +34,6 @@ export default {
     let fetchUrl = `${this.url_base}weather?q=seoul&units=metric&APPID=${process.env.VUE_APP_WEATHER_API_KEY}`;
     fetch(fetchUrl)
       .then((res) => {
-        console.log(res);
         return res.json();
       })
       .then((results) => {
