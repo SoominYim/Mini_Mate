@@ -24,17 +24,16 @@ export default {
   components: {},
   data() {
     return {
-      weather: {},
+
     };
   },
   computed: {
-    ...mapState("weatherStore", ["url_base", "months", "days"]),
+    ...mapState("weatherStore", ["url_base", "months", "days", "weather"]),
   },
   setup() { },
   created() { },
   mounted() {
-    // let fetchUrl = `${this.url_base}weather?q=seoul&units=metric&APPID=${process.env.VUE_APP_WEATHER_API_KEY}`;
-    let fetchUrl = `${this.url_base}weather?q=seoul&units=metric&APPID=f6876c452d89444b12d22a31a89942ad`;
+    let fetchUrl = `${this.url_base}weather?q=seoul&units=metric&APPID=${process.env.VUE_APP_WEATHER_API_KEY}`;
     fetch(fetchUrl)
       .then((res) => {
         return res.json();
@@ -46,7 +45,7 @@ export default {
   unmounted() { },
   methods: {
     setResult: function (results) {
-      this.weather = results;
+      this.$store.commit("weatherStore/setWeather", results);
     },
     dateBuilder: function () {
       let d = new Date();
