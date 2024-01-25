@@ -7,7 +7,7 @@
           <div class="date">{{ dateBuilder() }}</div>
         </div>
         <div class="weather-box">
-          <div class="temp">{{ weather.main.temp }}°</div>
+          <div class="temp">{{ weather.main.temp.toFixed(1) }}°</div>
           <v-img
             :width="100"
             :aspect-ratio="1"
@@ -23,16 +23,17 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "MiniHome",
   components: {},
   data() {
     return {
-      url_base: "https://api.openweathermap.org/data/2.5/",
       weather: {},
-      months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-      days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
     };
+  },
+  computed: {
+    ...mapState("weatherStore", ["url_base", "months", "days"]),
   },
   setup() {},
   created() {},

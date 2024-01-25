@@ -1,15 +1,11 @@
 <template lang="">
-  <div>
-    
-  </div>
+  <div></div>
 </template>
 <script>
-import lunch_store from "@/store/lunch"
+import lunch_store from "@/store/modules/lunch";
 
 export default {
-  components: {
-
-  },
+  components: {},
   data() {
     const { allFood, randomSelectedFood, menu, selectedFood } = lunch_store.state;
 
@@ -79,7 +75,7 @@ export default {
       this.menuActive++;
     },
   },
-  created() { },
+  created() {},
   computed: {
     // 라디오 체크 되어있나 확인
     selectActive() {
@@ -126,7 +122,7 @@ export default {
     // foods country 별로 data()바인딩
     const countries = ["korean", "chinese", "japanese", "western", "asian"];
 
-    countries.forEach(country => {
+    countries.forEach((country) => {
       if (this[`${country}Foods`].length === 0) {
         this[`${country}Foods`] = eval(`${country}Foods`);
       }
@@ -141,14 +137,13 @@ export default {
       };
     };
     function getChoiceFood(foods, country) {
-      return getRandomFood(foods.filter(food => food.country === country));
+      return getRandomFood(foods.filter((food) => food.country === country));
     }
-
 
     // 랜덤 선택 음식 변수 data() 바인딩
     const choices = ["all", "korean", "chinese", "japanese", "western", "asian"];
 
-    choices.forEach(choice => {
+    choices.forEach((choice) => {
       if (this[`${choice}ChoiceFood`] === "") {
         this[`${choice}ChoiceFood`] = choice === "all" ? getRandomFood(foods) : getChoiceFood(foods, choice);
       }
@@ -167,8 +162,6 @@ export default {
     this.menuIdx = menuIdx;
     this.groupedIndexes = { ...groupedIndexes };
   },
-}
+};
 </script>
-<style lang="">
-  
-</style>
+<style lang=""></style>
