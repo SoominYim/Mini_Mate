@@ -4,7 +4,7 @@
       <div class="weather-wrap" v-if="typeof weather.main != 'undefined'">
         <div class="location-box">
           <div class="location">서울</div>
-          <div class="date">{{ dateBuilder() }}</div>
+          <div class="date">{{ getDate }}</div>
         </div>
         <div class="weather-box">
           <div class="temp">{{ weather.main.temp.toFixed(1) }}°</div>
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
   name: "MiniHome",
   components: {},
@@ -34,6 +34,7 @@ export default {
   },
   computed: {
     ...mapState("weatherStore", ["url_base", "months", "days"]),
+    ...mapGetters("weatherStore", "getDate"),
   },
   setup() {},
   created() {},
@@ -51,14 +52,6 @@ export default {
   methods: {
     setResult: function (results) {
       this.weather = results;
-    },
-    dateBuilder: function () {
-      let d = new Date();
-      let day = this.days[d.getDay()];
-      let date = d.getDate();
-      let month = this.months[d.getMonth()];
-      let year = d.getFullYear();
-      return `${year}년 ${month} ${date}일 ${day} `;
     },
   },
 };
