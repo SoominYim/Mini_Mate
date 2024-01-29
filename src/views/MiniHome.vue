@@ -1,21 +1,21 @@
 <template>
   <div id="main">
     <main>
-      <div class="weather-wrap" v-if="typeof weather.main != 'undefined'">
+      <div class="weather-wrap" v-if="weatherData.main !== undefined">
         <div class="location-box">
           <div class="location">서울</div>
           <div class="date">{{ getDate }}</div>
         </div>
         <div class="weather-box">
-          <div class="temp">{{ weather.main.temp.toFixed(1) }}°</div>
+          <div class="temp">{{ weatherData.main.temp.toFixed(1) }}°</div>
           <v-img
             :width="100"
             :aspect-ratio="1"
             class="mx-auto"
             cover
-            :src="`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`"
+            :src="`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`"
           ></v-img>
-          <div class="weather">{{ weather.weather[0].main }}</div>
+          <div class="weather">{{ weatherData.weather[0].main }}</div>
         </div>
       </div>
     </main>
@@ -23,36 +23,26 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   name: "MiniHome",
   components: {},
   data() {
-    return {
-      weather: {},
-    };
+    return {};
   },
   computed: {
-    ...mapState("weatherStore", ["url_base", "months", "days"]),
-    ...mapGetters("weatherStore", "getDate"),
+    ...mapState("weatherStore", ["url_base", "months", "days", "weatherData"]),
+    ...mapGetters("weatherStore", ["getDate"]),
   },
   setup() {},
-  created() {},
-  mounted() {
-    let fetchUrl = `${this.url_base}weather?q=seoul&units=metric&APPID=${process.env.VUE_APP_WEATHER_API_KEY}`;
-    fetch(fetchUrl)
-      .then((res) => {
-        return res.json();
-      })
-      .then((results) => {
-        return this.setResult(results);
-      });
+  created() {
+    this.fetchData();
   },
+  mounted() {},
   unmounted() {},
   methods: {
-    setResult: function (results) {
-      this.weather = results;
-    },
+    ...mapActions("weatherStore", ["fetchData"]),
+    ...mapMutations("weatherStore", ["setResult"]),
   },
 };
 </script>

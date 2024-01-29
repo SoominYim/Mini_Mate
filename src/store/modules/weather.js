@@ -16,8 +16,25 @@ const weatherStore = {
       return `${year}년 ${month} ${date}일 ${day} `;
     },
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    setResult: function (state, results) {
+      state.weatherData = results;
+    },
+  },
+  actions: {
+    fetchData: async ({ commit, state }) => {
+      let fetchUrl = `${state.url_base}weather?q=seoul&units=metric&APPID=${process.env.VUE_APP_WEATHER_API_KEY}`;
+
+      fetch(fetchUrl)
+        .then((res) => res.json())
+        .then((results) => {
+          // mutation 호출
+          commit("setResult", results);
+          // console.log("After fetching data:", state.weatherData);
+        })
+        .catch((error) => console.error("Error fetching weather data:", error));
+    },
+  },
   modules: {},
 };
 
