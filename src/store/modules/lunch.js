@@ -1,7 +1,7 @@
 import { createStore } from "vuex";
 import foods from "@/data/foods";
 
-const lunch_store = createStore({
+const lunchStore = createStore({
   state() {
     return {
       // 음식
@@ -39,4 +39,4 @@ const lunch_store = createStore({
   getters: {},
 });
 
-export default lunch_store;
+export default lunchStore;

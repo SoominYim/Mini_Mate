@@ -1,5 +1,12 @@
 <template lang="">
-  <div></div>
+  <div class="swappy-radios" role="radiogroup" aria-labelledby="swappy-radios-label">
+    <h3 id="swappy-radios-label">Select an option</h3>
+    <label v-for="(option, index) in options" :key="index" @click="handleChange(option)">
+      <input type="radio" v-model="selectedOption" :value="option" />
+      <span class="radio" :class="{ active: selectedOption === option }"></span>
+      <span>{{ option.label }}</span>
+    </label>
+  </div>
 </template>
 <script>
 import lunch_store from "@/store/modules/lunch";
@@ -35,6 +42,17 @@ export default {
       selectedFood: selectedFood.selectedFood,
       selectedCountry: selectedFood.selectedCountry,
       // 음식 종료 ---------------------------------------
+
+      options: [
+        { label: "First option", value: 1 },
+        { label: "Second option", value: 2 },
+        { label: "Third option", value: 3 },
+        { label: "Fourth option", value: 4 },
+        { label: "Last option", value: 5 },
+      ],
+      selectedOption: null,
+      currentValue: 1,
+      timeout: 0.75,
     };
   },
   methods: {
@@ -74,12 +92,76 @@ export default {
       // }
       this.menuActive++;
     },
+    handleChange(option) {
+      if (this.selectedOption !== option) {
+        this.temporarilyDisable();
+        this.animateRadio(option.value);
+      }
+    },
+    animateRadio(nextValue) {
+      const dirDown = nextValue > this.currentValue;
+      // const yDiff = Math.abs((nextValue - this.currentValue) * this.indicativeDistance);
+      const othersToMove = this.range(
+        Math.min(this.currentValue, nextValue),
+        Math.max(this.currentValue, nextValue),
+        dirDown
+      );
+      let othersCss = "";
+
+      othersToMove.forEach((option) => {
+        const staggerDelay = othersToMove.length > 1 ? (0.1 / othersToMove.length) * option : 0;
+        othersCss += `
+          [data-index="${option}"] .radio {
+            animation: moveOthers ${this.timeout - staggerDelay}s ${staggerDelay}s;
+          }
+        `;
+      });
+
+      const css = `
+        ${othersCss}
+        [data-index="${this.currentValue}"] .radio { 
+          animation: moveIt ${this.timeout}s; 
+        }
+      `;
+      this.appendStyles(css);
+      this.currentValue = nextValue;
+    },
+    appendStyles(css) {
+      const head = document.head;
+      const style = document.createElement("style");
+      style.type = "text/css";
+      style.id = "swappy-radio-styles";
+      style.appendChild(document.createTextNode(css));
+      head.appendChild(style);
+    },
+    range(start, end, dirDown) {
+      let extra = 1;
+      if (dirDown) {
+        extra = 0;
+      }
+      return [...Array(end - start).keys()].map((v) => start + v + extra);
+    },
+    temporarilyDisable() {
+      if (this.$refs.radioInputs) {
+        this.$refs.radioInputs.forEach((item) => {
+          item.setAttribute("disabled", true);
+          setTimeout(() => {
+            item.removeAttribute("disabled");
+          }, this.timeout * 1000);
+        });
+      }
+    },
   },
   created() {},
   computed: {
     // 라디오 체크 되어있나 확인
     selectActive() {
       return this.selectedCountry !== "";
+    },
+    indicativeDistance() {
+      const firstRadioY = this.$refs.radioLabels[0].getBoundingClientRect().y;
+      const secondRadioY = this.$refs.radioLabels[1].getBoundingClientRect().y;
+      return Math.abs(secondRadioY - firstRadioY);
     },
   },
   mounted() {
@@ -164,4 +246,59 @@ export default {
   },
 };
 </script>
-<style lang=""></style>
+<style lang="scss">
+h3 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.swappy-radios {
+  label {
+    display: block;
+    position: relative;
+    padding-left: 4rem;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+    font-size: 2rem;
+    user-select: none;
+    color: #555;
+    &:hover .radio {
+      opacity: 0.8;
+    }
+  }
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  .radio {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 2.5rem;
+    width: 2.5rem;
+    background: #c9ded6;
+    border-radius: 50%;
+    &::after {
+      display: block;
+      content: "";
+      position: absolute;
+      opacity: 0;
+      top: 0.5rem;
+      left: 0.5rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background: #fff;
+    }
+  }
+  .radio.active {
+    background-color: #0ac07d;
+    &::after {
+      opacity: 1;
+    }
+  }
+}
+</style>
