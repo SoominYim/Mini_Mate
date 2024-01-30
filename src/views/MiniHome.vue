@@ -49,9 +49,6 @@ export default {
 <style scoped>
 #main {
   height: 100%;
-  background-image: url("../assets/cold-bg.jpg");
-  background-size: cover;
-  background-position: bottom;
   transition: 0.4s;
   font-family: "montserrat", sans-serif;
   main {
