@@ -10,11 +10,9 @@
   </v-toolbar>
   <v-navigation-drawer v-model="drawer" color="#424242">
     <v-list>
-      <v-list-item
-        class="mb-2"
-        title="미니 기여어"
-        :prepend-avatar="require('@/assets/mini_profile.png')"
-      ></v-list-item>
+      <v-list-item class="mb-2" :prepend-avatar="require('@/assets/mini_profile.png')">
+        <v-list-item-title class="미니기여어"> 미니 기여어 </v-list-item-title>
+      </v-list-item>
       <v-divider></v-divider>
       <v-list-item
         v-for="(item, index) in menuItems"
@@ -54,13 +52,16 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/css/common/font.css";
-$list-item-title-font-size: 60px;
+
 div {
   font-family: "UhBeemysen";
 }
 
 .v-list-item-title {
   font-size: 1.4rem !important;
+}
+.미니기여어 {
+  font-size: 1.6rem !important;
 }
 
 .v-spacer {
