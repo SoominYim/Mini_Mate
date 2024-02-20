@@ -181,7 +181,7 @@ export default {
   }
   .date-text {
     color: #444;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
   }
   .v-sheet {
