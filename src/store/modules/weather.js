@@ -5,6 +5,7 @@ const weatherStore = {
     months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
     days: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
     weatherData: {},
+    weatherDaily: {},
   },
   getters: {
     getDate: (state) => {
@@ -17,8 +18,11 @@ const weatherStore = {
     },
   },
   mutations: {
-    setResult: function (state, results) {
+    setDate: function (state, results) {
       state.weatherData = results;
+    },
+    setDaily: function (state, results) {
+      state.weatherDaily = results;
     },
   },
   actions: {
@@ -29,10 +33,22 @@ const weatherStore = {
         .then((res) => res.json())
         .then((results) => {
           // mutation 호출
-          commit("setResult", results);
+          commit("setDate", results);
           // console.log("After fetching data:", state.weatherData);
         })
         .catch((error) => console.error("Error fetching weather data:", error));
+    },
+    // 새로운 fetchDataDaily 액션
+    fetchDataDaily: async ({ commit, state }) => {
+      let fetchUrl = `${state.url_base}forecast?q=seoul&interval=hourly&appid=${process.env.VUE_APP_WEATHER_API_KEY}`;
+      fetch(fetchUrl)
+        .then((res) => res.json())
+        .then((results) => {
+          // mutation 호출
+          commit("setDaily", results);
+          console.log("After fetching daily data:", state.weatherData);
+        })
+        .catch((error) => console.error("Error fetching daily weather data:", error));
     },
   },
   modules: {},

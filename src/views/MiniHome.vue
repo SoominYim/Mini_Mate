@@ -1,13 +1,14 @@
 <template>
   <div id="main">
     <main>
-      <div class="weather-wrap" v-if="weatherData.main !== undefined">
+      <div class="weather-wrap" v-if="weatherData.main !== undefined && weatherDaily.list !== undefined">
         <div class="location-box">
           <div class="location">서울</div>
           <div class="date">{{ getDate }}</div>
         </div>
         <div class="weather-box">
           <div class="temp">{{ weatherData.main.temp.toFixed(1) }}°</div>
+          <div>{{ weatherData.main }}</div>
           <v-img
             :width="100"
             :aspect-ratio="1"
@@ -17,32 +18,81 @@
           ></v-img>
           <div class="weather">{{ weatherData.weather[0].main }}</div>
         </div>
+
+        <v-sheet class="mx-auto" elevation="8" max-width="800">
+          <v-slide-group v-model="model" class="pa-4" selected-class="bg-primary" show-arrows center-active>
+            <v-slide-group-item
+              v-for="item in weatherDaily.list"
+              :key="item.dt"
+              v-slot="{ isSelected, toggle, selectedClass }"
+            >
+              <v-card color="grey-lighten-1" :class="['ma-4', selectedClass]" height="100" width="50" @click="toggle">
+                <div class="d-flex fill-height align-center flex-column justify-center">
+                  <v-scale-transition>
+                    <v-img
+                      :width="50"
+                      :aspect-ratio="1"
+                      class="mx-auto"
+                      cover
+                      :src="`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`"
+                    ></v-img>
+                    <v-icon v-if="isSelected" color="white" size="48" icon="mdi-close-circle-outline"> </v-icon>
+                  </v-scale-transition>
+                  <div class="weather-text">{{ item.dt_txt }}</div>
+                </div>
+              </v-card>
+            </v-slide-group-item>
+          </v-slide-group>
+
+          <v-expand-transition>
+            <v-sheet v-if="model != null" height="200">
+              <div class="d-flex fill-height align-center justify-center">
+                <h3 class="text-h6">Selected {{ model }}</h3>
+              </div>
+            </v-sheet>
+          </v-expand-transition>
+        </v-sheet>
+
+        <div class="daily-forecast d-flex flex-row justify-center">
+          <div v-for="item in weatherDaily.list" :key="item.dt">
+            <v-img
+              :width="50"
+              :aspect-ratio="1"
+              class="mx-auto"
+              cover
+              :src="`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`"
+            ></v-img>
+            {{ item }}
+          </div>
+        </div>
       </div>
     </main>
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 export default {
   name: "MiniHome",
   components: {},
   data() {
-    return {};
+    return {
+      model: null,
+    };
   },
   computed: {
-    ...mapState("weatherStore", ["url_base", "months", "days", "weatherData"]),
+    ...mapState("weatherStore", ["url_base", "months", "days", "weatherData", "weatherDaily"]),
     ...mapGetters("weatherStore", ["getDate"]),
   },
   setup() {},
   created() {
-    this.fetchData();
+    this.fetchData(); // 현재 날씨 데이터 가져오기
+    this.fetchDataDaily(); // 일일 날씨 예보 데이터 가져오기
   },
   mounted() {},
   unmounted() {},
   methods: {
-    ...mapActions("weatherStore", ["fetchData"]),
-    ...mapMutations("weatherStore", ["setResult"]),
+    ...mapActions("weatherStore", ["fetchData", "fetchDataDaily"]),
   },
 };
 </script>
@@ -117,6 +167,8 @@ export default {
     font-weight: 700;
     font-style: italic;
     text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+  }
+  .weather-text {
   }
 }
 </style>

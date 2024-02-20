@@ -70,6 +70,5 @@ div {
 
 .v-list-item--active {
   background-color: rgba(255, 255, 255, 0.1);
-  /* or any other color you prefer */
 }
 </style>
