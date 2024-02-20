@@ -14,7 +14,7 @@
               <span class="max">{{ weatherData.main.temp_max.toFixed(1) }}°</span>
             </div>
           </div>
-          <div>{{ weatherData.main }}</div>
+          <!-- <div>{{ weatherData.main }}</div> -->
           <v-img
             :width="100"
             :aspect-ratio="1"
