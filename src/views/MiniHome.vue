@@ -7,7 +7,13 @@
           <div class="date">{{ getDate }}</div>
         </div>
         <div class="weather-box">
-          <div class="temp">{{ weatherData.main.temp.toFixed(1) }}°</div>
+          <div class="temp">
+            <div>{{ weatherData.main.temp.toFixed(1) }}°</div>
+            <div class="min_max">
+              <span class="min">{{ weatherData.main.temp_min.toFixed(1) }}°</span>/
+              <span class="max">{{ weatherData.main.temp_max.toFixed(1) }}°</span>
+            </div>
+          </div>
           <div>{{ weatherData.main }}</div>
           <v-img
             :width="100"
@@ -19,18 +25,18 @@
           <div class="weather">{{ weatherData.weather[0].main }}</div>
         </div>
 
-        <v-sheet class="mx-auto" elevation="8" max-width="800">
+        <v-sheet class="mx-auto mt-8" elevation="3" max-width="800" theme="false" rounded>
           <v-slide-group v-model="model" class="pa-4" selected-class="bg-primary" show-arrows center-active>
             <v-slide-group-item
               v-for="item in weatherDaily.list"
               :key="item.dt"
               v-slot="{ isSelected, toggle, selectedClass }"
             >
-              <v-card color="grey-lighten-1" :class="['ma-4', selectedClass]" height="100" width="50" @click="toggle">
+              <v-card color="grey-lighten-1" :class="['ma-4', selectedClass]" height="110" width="70" @click="toggle">
                 <div class="d-flex fill-height align-center flex-column justify-center">
                   <v-scale-transition>
                     <v-img
-                      :width="50"
+                      :width="60"
                       :aspect-ratio="1"
                       class="mx-auto"
                       cover
@@ -38,7 +44,10 @@
                     ></v-img>
                     <v-icon v-if="isSelected" color="white" size="48" icon="mdi-close-circle-outline"> </v-icon>
                   </v-scale-transition>
-                  <div class="weather-text">{{ item.dt_txt }}</div>
+                  <div class="text-center date-text">
+                    {{ item.main.temp.toFixed(1) }}° <br />
+                    {{ formatDate(item.dt_txt) }}
+                  </div>
                 </div>
               </v-card>
             </v-slide-group-item>
@@ -52,19 +61,6 @@
             </v-sheet>
           </v-expand-transition>
         </v-sheet>
-
-        <div class="daily-forecast d-flex flex-row justify-center">
-          <div v-for="item in weatherDaily.list" :key="item.dt">
-            <v-img
-              :width="50"
-              :aspect-ratio="1"
-              class="mx-auto"
-              cover
-              :src="`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`"
-            ></v-img>
-            {{ item }}
-          </div>
-        </div>
       </div>
     </main>
   </div>
@@ -93,6 +89,11 @@ export default {
   unmounted() {},
   methods: {
     ...mapActions("weatherStore", ["fetchData", "fetchDataDaily"]),
+    formatDate(t) {
+      const d = new Date(t);
+
+      return `${d.getDate()}일\n${this.days[d.getDay()]}\n${d.getHours()}시`;
+    },
   },
 };
 </script>
@@ -168,7 +169,23 @@ export default {
     font-style: italic;
     text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
   }
-  .weather-text {
+  .min_max {
+    font-size: 50px;
+    text-shadow: 1px 2px rgba(0, 0, 0, 0.25);
+  }
+  .min {
+    color: #2178ef;
+  }
+  .max {
+    color: #cd3534;
+  }
+  .date-text {
+    color: #444;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .v-sheet {
+    background: rgba(255, 255, 255, 0.25);
   }
 }
 </style>

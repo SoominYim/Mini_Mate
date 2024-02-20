@@ -40,13 +40,13 @@ const weatherStore = {
     },
     // 새로운 fetchDataDaily 액션
     fetchDataDaily: async ({ commit, state }) => {
-      let fetchUrl = `${state.url_base}forecast?q=seoul&interval=hourly&appid=${process.env.VUE_APP_WEATHER_API_KEY}`;
+      let fetchUrl = `${state.url_base}forecast?q=seoul&units=metric&appid=${process.env.VUE_APP_WEATHER_API_KEY}`;
       fetch(fetchUrl)
         .then((res) => res.json())
         .then((results) => {
           // mutation 호출
           commit("setDaily", results);
-          console.log("After fetching daily data:", state.weatherData);
+          // console.log("After fetching daily data:", state.weatherData);
         })
         .catch((error) => console.error("Error fetching daily weather data:", error));
     },
