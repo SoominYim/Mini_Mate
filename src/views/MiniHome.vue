@@ -10,8 +10,24 @@
           <div class="temp">
             <div>{{ weatherData.main.temp.toFixed(1) }}°</div>
             <div class="min_max">
-              <span class="min">{{ weatherData.main.temp_min.toFixed(1) }}°</span>/
-              <span class="max">{{ weatherData.main.temp_max.toFixed(1) }}°</span>
+              <span class="min">
+                {{
+                  weatherDaily.list
+                    .filter((v) => new Date().getDate() === new Date(v.dt_txt).getDate())
+                    .map((v) => v.main.temp)
+                    .reduce((min, temp) => Math.min(min, temp), Infinity)
+                    .toFixed(1)
+                }}°</span
+              >/
+              <span class="max">
+                {{
+                  weatherDaily.list
+                    .filter((v) => new Date().getDate() === new Date(v.dt_txt).getDate())
+                    .map((v) => v.main.temp)
+                    .reduce((max, temp) => Math.max(max, temp), -Infinity)
+                    .toFixed(1)
+                }}°</span
+              >
             </div>
           </div>
           <!-- <div>{{ weatherData.main }}</div> -->
@@ -26,9 +42,9 @@
         </div>
 
         <v-sheet class="mx-auto mt-8" elevation="3" max-width="800" theme="false" rounded>
-          <v-slide-group v-model="model" class="pa-4" selected-class="bg-primary" show-arrows center-active>
+          <v-slide-group v-model="model" class="pa-4" selected-class="bg-primary" center-active>
             <v-slide-group-item
-              v-for="item in weatherDaily.list"
+              v-for="item in filteredWeatherList"
               :key="item.dt"
               v-slot="{ isSelected, toggle, selectedClass }"
             >
@@ -56,7 +72,26 @@
           <v-expand-transition>
             <v-sheet v-if="model != null" height="200">
               <div class="d-flex fill-height align-center justify-center">
-                <h3 class="text-h6">Selected {{ model }}</h3>
+                <h3 class="text-h6">
+                  강수 확률: {{ filteredWeatherList[model].pop * 100 }}%
+                  <br />
+                  강수량:
+                  {{
+                    filteredWeatherList[model].snow
+                      ? filteredWeatherList[model].snow["3h"]
+                        ? filteredWeatherList[model].snow["3h"] + "mm"
+                        : "데이터 없음"
+                      : filteredWeatherList[model].rain
+                      ? filteredWeatherList[model].rain["3h"]
+                        ? filteredWeatherList[model].rain["3h"] + "mm"
+                        : "데이터 없음"
+                      : "데이터 없음"
+                  }}
+                  <br />
+                  바람 속도: {{ filteredWeatherList[model].wind.speed }}m/s
+                  <br />
+                  습도: {{ filteredWeatherList[model].main.humidity }}%
+                </h3>
               </div>
             </v-sheet>
           </v-expand-transition>
@@ -79,6 +114,15 @@ export default {
   computed: {
     ...mapState("weatherStore", ["url_base", "months", "days", "weatherData", "weatherDaily"]),
     ...mapGetters("weatherStore", ["getDate"]),
+    filteredWeatherList() {
+      // 현재 시간
+      const currentTime = new Date();
+      // 현재 시간 이후의 데이터만 필터링하여 반환
+      return this.weatherDaily.list.filter((item) => {
+        const itemTime = new Date(item.dt_txt);
+        return itemTime >= currentTime;
+      });
+    },
   },
   setup() {},
   created() {
@@ -91,7 +135,6 @@ export default {
     ...mapActions("weatherStore", ["fetchData", "fetchDataDaily"]),
     formatDate(t) {
       const d = new Date(t);
-
       return `${d.getDate()}일\n${this.days[d.getDay()]}\n${d.getHours()}시`;
     },
   },

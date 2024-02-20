@@ -34,7 +34,7 @@
 export default {
   data() {
     return {
-      drawer: false,
+      drawer: true,
       menuItems: [
         { icon: "mdi-home", link: "/", title: "홈" },
         { icon: "mdi-food", link: "/lunch", title: "뭐 먹 지" },
