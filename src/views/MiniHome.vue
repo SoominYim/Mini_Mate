@@ -33,7 +33,7 @@
               v-slot="{ isSelected, toggle, selectedClass }"
             >
               <v-card color="grey-lighten-1" :class="['ma-4', selectedClass]" height="110" width="70" @click="toggle">
-                <div class="d-flex fill-height align-center flex-column justify-center">
+                <div class="d-flex fill-height align-center flex-column justify-center pb-3">
                   <v-scale-transition>
                     <v-img
                       :width="60"
