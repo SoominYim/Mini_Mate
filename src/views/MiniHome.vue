@@ -4,7 +4,9 @@
       <mini-snow
         v-show="weatherData.weather && weatherData.weather.length > 0 && weatherData.weather[0]?.main === 'Snow'"
       ></mini-snow>
-      <mini-rain></mini-rain>
+      <mini-rain
+        v-show="weatherData.weather && weatherData.weather.length > 0 && weatherData.weather[0]?.main === 'Rain'"
+      ></mini-rain>
 
       <div class="weather-wrap" v-if="weatherData.main !== undefined && weatherDaily.list !== undefined">
         <div class="location-box">
@@ -75,10 +77,10 @@
           </v-slide-group>
 
           <v-expand-transition>
-            <v-sheet v-if="model != null" height="200">
+            <v-sheet v-if="model != null" height="130">
               <div class="d-flex fill-height align-center justify-center">
                 <h3 class="text-h6">
-                  강수 확률: {{ filteredWeatherList[model].pop * 100 }}%
+                  강수 확률: {{ ~~(filteredWeatherList[model].pop * 100) }}%
                   <br />
                   강수량:
                   {{
@@ -112,7 +114,10 @@ import MiniRain from "@/components/MiniRain.vue";
 import MiniSnow from "@/components/MiniSnow.vue";
 export default {
   name: "MiniHome",
-  components: { MiniSnow, MiniRain },
+  components: {
+    MiniSnow,
+    MiniRain,
+  },
   data() {
     return {
       model: null,

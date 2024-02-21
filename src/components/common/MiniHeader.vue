@@ -27,6 +27,14 @@
         </v-list-item-title>
       </v-list-item>
     </v-list>
+    <template v-slot:append>
+      <div class="d-flex justify-space-around">
+        <v-btn v-for="item in aboutItems" :key="item.icon" :icon="item.icon" variant="text"></v-btn>
+      </div>
+      <div class="d-flex text-h6 justify-center">
+        © {{ new Date().getFullYear() }}. S-o-o-Min . All rights reserved.
+      </div>
+    </template>
   </v-navigation-drawer>
 </template>
 
@@ -39,6 +47,16 @@ export default {
         { icon: "mdi-home", link: "/", title: "홈" },
         { icon: "mdi-food", link: "/lunch", title: "뭐 먹 지" },
         { icon: "mdi-coffee", link: "/coffee", title: "커 피 사 줘" },
+      ],
+      aboutItems: [
+        { icon: "mdi-github" },
+        { icon: "mdi-instagram" },
+        {
+          icon: "mdi-facebook",
+        },
+        {
+          icon: "mdi-alpha-t-circle-outline",
+        },
       ],
     };
   },
@@ -58,10 +76,10 @@ div {
 }
 
 .v-list-item-title {
-  font-size: 1.4rem !important;
+  font-size: 1.7rem !important;
 }
 .미니기여어 {
-  font-size: 1.6rem !important;
+  font-size: 2.2rem !important;
 }
 
 .v-spacer {
