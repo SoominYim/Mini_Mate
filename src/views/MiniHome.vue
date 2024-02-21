@@ -12,7 +12,7 @@
         </div>
         <div class="weather-box">
           <div class="temp">
-            <div>{{ weatherData.main.temp.toFixed(1) }}°</div>
+            <div>{{ filteredWeatherList[0].main.temp.toFixed(1) }}°</div>
             <div class="min_max">
               <span class="min">
                 {{
@@ -128,11 +128,21 @@ export default {
     filteredWeatherList() {
       // 현재 시간
       const currentTime = new Date();
-      // 현재 시간 이후의 데이터만 필터링하여 반환
-      return this.weatherDaily.list.filter((item) => {
-        const itemTime = new Date(item.dt_txt);
-        return itemTime >= currentTime;
+      // 오늘 날짜를 구합니다.
+      const currentDateString = currentTime.toISOString().slice(0, 10);
+
+      // 현재 시간 이후의 데이터 인덱스 찾기
+      let startIndex = this.weatherDaily.list.findIndex((item) => {
+        const itemDate = new Date(item.dt_txt.replace(/-/g, "/"));
+        const itemDateString = itemDate.toISOString().slice(0, 10);
+        if (itemDateString > currentDateString) return true;
+        else if (itemDateString < currentDateString) return false;
+        else {
+          return parseInt(item.dt_txt.substring(11, 13)) >= currentTime.getHours();
+        }
       });
+      // 현재 시간 이후의 데이터만 필터링하여 반환
+      return this.weatherDaily.list.slice(startIndex);
     },
     isSnow() {
       // 날씨 데이터에서 첫 번째 요소가 'Snow'인지 확인
