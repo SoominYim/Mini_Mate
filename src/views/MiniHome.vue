@@ -1,6 +1,11 @@
 <template>
   <div id="main">
     <main>
+      <mini-snow
+        v-show="weatherData.weather && weatherData.weather.length > 0 && weatherData.weather[0]?.main === 'Snow'"
+      ></mini-snow>
+      <mini-rain></mini-rain>
+
       <div class="weather-wrap" v-if="weatherData.main !== undefined && weatherDaily.list !== undefined">
         <div class="location-box">
           <div class="location">서울</div>
@@ -103,9 +108,11 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
+import MiniRain from "@/components/MiniRain.vue";
+import MiniSnow from "@/components/MiniSnow.vue";
 export default {
   name: "MiniHome",
-  components: {},
+  components: { MiniSnow, MiniRain },
   data() {
     return {
       model: null,
