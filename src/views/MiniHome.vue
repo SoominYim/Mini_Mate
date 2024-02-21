@@ -46,13 +46,19 @@
         </div>
 
         <v-sheet class="mx-auto mt-8" elevation="3" max-width="800" theme="false" rounded>
-          <v-slide-group v-model="model" class="pa-4" selected-class="bg-primary" center-active>
+          <v-slide-group v-model="model" class="pa-4" selected-class="selected" center-active>
             <v-slide-group-item
               v-for="item in filteredWeatherList"
               :key="item.dt"
               v-slot="{ isSelected, toggle, selectedClass }"
             >
-              <v-card color="grey-lighten-1" :class="['ma-4', selectedClass]" height="110" width="70" @click="toggle">
+              <v-card
+                color="rgba(255, 255, 255, 0.25)"
+                :class="['ma-4', selectedClass]"
+                height="110"
+                width="70"
+                @click="toggle"
+              >
                 <div class="d-flex fill-height align-center flex-column justify-center pb-3">
                   <v-scale-transition>
                     <v-img
@@ -138,7 +144,10 @@ export default {
         if (itemDateString > currentDateString) return true;
         else if (itemDateString < currentDateString) return false;
         else {
-          return parseInt(item.dt_txt.substring(11, 13)) >= currentTime.getHours();
+          return (
+            parseInt(item.dt_txt.substring(11, 13)) > currentTime.getHours() ||
+            currentTime.getHours() - item.dt_txt.substring(11, 13) <= 2
+          );
         }
       });
       // 현재 시간 이후의 데이터만 필터링하여 반환
@@ -309,6 +318,11 @@ export default {
   }
   .v-sheet {
     background: rgba(255, 255, 255, 0.25);
+  }
+  .selected {
+    --v-theme-overlay-multiplier: var(--v-theme-success-overlay-multiplier);
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
   }
 }
 </style>
