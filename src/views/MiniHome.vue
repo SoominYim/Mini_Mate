@@ -1,12 +1,9 @@
 <template>
   <div id="main">
-    <main>
-      <mini-snow
-        v-show="weatherData.weather && weatherData.weather.length > 0 && weatherData.weather[0]?.main === 'Snow'"
-      ></mini-snow>
-      <mini-rain
-        v-show="weatherData.weather && weatherData.weather.length > 0 && weatherData.weather[0]?.main === 'Rain'"
-      ></mini-rain>
+    <mini-star v-show="new Date().getHours() >= 20 || new Date().getHours() < 6"></mini-star>
+    <main :style="backgroundStyle">
+      <mini-snow v-show="isSnow"></mini-snow>
+      <mini-rain v-show="isRain"></mini-rain>
 
       <div class="weather-wrap" v-if="weatherData.main !== undefined && weatherDaily.list !== undefined">
         <div class="location-box">
@@ -110,6 +107,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
+import MiniStar from "@/components/MiniStar.vue";
 import MiniRain from "@/components/MiniRain.vue";
 import MiniSnow from "@/components/MiniSnow.vue";
 export default {
@@ -117,6 +115,7 @@ export default {
   components: {
     MiniSnow,
     MiniRain,
+    MiniStar,
   },
   data() {
     return {
@@ -134,6 +133,56 @@ export default {
         const itemTime = new Date(item.dt_txt);
         return itemTime >= currentTime;
       });
+    },
+    isSnow() {
+      // 날씨 데이터에서 첫 번째 요소가 'Snow'인지 확인
+      return (
+        this.weatherData &&
+        this.weatherData.weather &&
+        this.weatherData.weather.length > 0 &&
+        this.weatherData.weather[0].main === "Snow"
+      );
+    },
+    isRain() {
+      // 날씨 데이터에서 첫 번째 요소가 'Rain'인지 확인
+      return (
+        this.weatherData &&
+        this.weatherData.weather &&
+        this.weatherData.weather.length > 0 &&
+        this.weatherData.weather[0].main === "Rain"
+      );
+    },
+
+    backgroundStyle() {
+      const currentTime = new Date().getHours();
+      if (currentTime >= 6 && currentTime < 9) {
+        return { background: "linear-gradient(to bottom, rgba(220, 66, 37, 0.6), rgba(0, 47, 75, 0.8))" }; // 06:00 ~ 09:00
+      } else if (currentTime >= 9 && currentTime < 12) {
+        return {
+          background:
+            "linear-gradient(rgba(56, 127, 251, 0.8) 0%, rgba(52, 196, 255, 0.8) 30%, rgba(255, 198, 208, 0.8) 75%, rgba(255, 206, 170, 0.8) 95%)",
+        }; // 09:00 ~ 12:00
+      } else if (currentTime >= 12 && currentTime < 17) {
+        // 비 또는 눈이 오는지 확인
+        if (
+          (this.weatherData &&
+            this.weatherData.weather &&
+            this.weatherData.weather.length > 0 &&
+            this.weatherData.weather[0].main === "Snow") ||
+          (this.weatherData &&
+            this.weatherData.weather &&
+            this.weatherData.weather.length > 0 &&
+            this.weatherData.weather[0].main === "Rain")
+        ) {
+          return { background: "linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75))" }; // 비 또는 눈이 오는 경우
+        } else {
+          return { background: "linear-gradient(to bottom, rgba(179, 140, 34, 0.75), rgba(236, 95, 24, 0.75))" }; // 비 또는 눈이 오지 않는 경우
+        }
+      } else if (currentTime >= 17 && currentTime < 20) {
+        return { background: "linear-gradient(to bottom, rgba(0, 47, 75, 0.8), rgba(220, 66, 37, 0.6))" }; // 17:00 ~ 20:00
+      } else {
+        return { background: "linear-gradient(315deg, #2d3436 30%, #000000 74%)" }; // 20:00 ~ 06:00
+      }
     },
   },
   setup() {},
@@ -160,7 +209,25 @@ export default {
   main {
     height: 100%;
     padding: 25px;
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75));
+
+    /* 06:00 ~ 09:00 */
+    /* background-image: linear-gradient(to bottom, rgba(220, 66, 37, 0.6), rgba(0, 47, 75, 0.8)); */
+    /* 09:00 ~ 12:00 */
+    /* background: linear-gradient(
+      rgba(56, 127, 251, 0.8) 0%,
+      rgba(52, 196, 255, 0.8) 30%,
+      rgba(255, 198, 208, 0.8) 75%,
+      rgba(255, 206, 170, 0.8) 95%
+      ); */
+    /* 12:00 ~ 17:00 */
+    /* if : Rain or snow */
+    /* background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75)); */
+    /* else*/
+    /* background: linear-gradient(to bottom, rgba(179, 140, 34, 0.75), rgba(236, 95, 24, 0.75)); */
+    /* 17:00 ~ 20:00 */
+    /* background-image: linear-gradient(to bottom, rgba(0, 47, 75, 0.8), rgba(220, 66, 37, 0.6)); */
+    /* 20:00 ~ 06:00 */
+    /* background-image: linear-gradient(315deg, #2d3436 30%, #000000 74%); */
   }
   .search-box {
     width: 100%;

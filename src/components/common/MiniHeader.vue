@@ -29,7 +29,14 @@
     </v-list>
     <template v-slot:append>
       <div class="d-flex justify-space-around">
-        <v-btn v-for="item in aboutItems" :key="item.icon" :icon="item.icon" variant="text"></v-btn>
+        <v-btn
+          v-for="item in aboutItems"
+          :href="item.link"
+          target="_blank"
+          :key="item.icon"
+          :icon="item.icon"
+          variant="text"
+        ></v-btn>
       </div>
       <div class="d-flex text-h6 justify-center">
         © {{ new Date().getFullYear() }}. S-o-o-Min . All rights reserved.
@@ -49,13 +56,15 @@ export default {
         { icon: "mdi-coffee", link: "/coffee", title: "커 피 사 줘" },
       ],
       aboutItems: [
-        { icon: "mdi-github" },
-        { icon: "mdi-instagram" },
+        { icon: "mdi-github", link: "https://github.com/SoominYim" },
+        { icon: "mdi-instagram", link: "https://www.instagram.com/_soo_min_/" },
         {
           icon: "mdi-facebook",
+          link: "https://www.facebook.com/profile.php?id=100002681110982",
         },
         {
           icon: "mdi-alpha-t-circle-outline",
+          link: "https://s-o-o-min.tistory.com/",
         },
       ],
     };
