@@ -164,16 +164,7 @@ export default {
         }; // 09:00 ~ 12:00
       } else if (currentTime >= 12 && currentTime < 17) {
         // 비 또는 눈이 오는지 확인
-        if (
-          (this.weatherData &&
-            this.weatherData.weather &&
-            this.weatherData.weather.length > 0 &&
-            this.weatherData.weather[0].main === "Snow") ||
-          (this.weatherData &&
-            this.weatherData.weather &&
-            this.weatherData.weather.length > 0 &&
-            this.weatherData.weather[0].main === "Rain")
-        ) {
+        if (!this.isSnow || !this.isRain) {
           return { background: "linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75))" }; // 비 또는 눈이 오는 경우
         } else {
           return { background: "linear-gradient(to bottom, rgba(179, 140, 34, 0.75), rgba(236, 95, 24, 0.75))" }; // 비 또는 눈이 오지 않는 경우
