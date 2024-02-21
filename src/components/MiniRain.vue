@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="container">
     <div v-for="i in 50" class="drop" :style="'--i: ' + i" :key="i"></div>
   </div>
 </template>
@@ -23,9 +23,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-body {
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
   height: 100vh;
   overflow: hidden;
+  pointer-events: none;
 }
 
 @function random_range($min, $max) {
