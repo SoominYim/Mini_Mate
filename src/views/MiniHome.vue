@@ -83,7 +83,7 @@
                   <v-icon v-if="isSelected" color="white" size="48" icon="mdi-close-circle-outline"> </v-icon>
                 </v-scale-transition>
                 <div class="text-center date-text">
-                  {{ formatDate(item.dt_txt) }}<br />
+                  {{ formatDate(item.dt_txt, i) }}<br />
                   {{ item.main.temp.toFixed(1) }}°
                 </div>
               </div>
@@ -215,9 +215,9 @@ export default {
   unmounted() {},
   methods: {
     ...mapActions("weatherStore", ["fetchData", "fetchDataDaily"]),
-    formatDate(t) {
+    formatDate(t, i) {
       const d = new Date(t);
-      return `${d.getHours()}시\n${this.days[d.getDay()]}`;
+      return `${i === 0 ? "지금" : d.getHours() + "시"} \n${this.days[d.getDay()]}`;
     },
   },
 };
