@@ -82,7 +82,7 @@
                   ></v-img>
                   <v-icon v-if="isSelected" color="white" size="48" icon="mdi-close-circle-outline"> </v-icon>
                 </v-scale-transition>
-                <div class="text-center date-text" :class="isDay">
+                <div class="text-center date-text">
                   {{ formatDate(item.dt_txt) }}<br />
                   {{ item.main.temp.toFixed(1) }}°
                 </div>
@@ -224,7 +224,6 @@ export default {
 </script>
 <style scoped>
 main {
-  font-family: "montserrat", sans-serif;
   padding: 25px;
   transition: 0.4s;
 

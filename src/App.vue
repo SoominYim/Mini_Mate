@@ -35,8 +35,8 @@ body {
 }
 
 #app {
+  height: auto;
   min-height: 100vh;
-  overflow-y: auto; /* 내용이 넘칠 때 스크롤 표시 */
   position: relative; /* 부모의 높이 기준으로 설정 */
 }
 
