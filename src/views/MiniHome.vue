@@ -1,8 +1,8 @@
 <template>
   <mini-star v-show="new Date().getHours() >= 20 || new Date().getHours() < 6"></mini-star>
-  <main :style="backgroundStyle">
-    <mini-snow v-show="isSnow"></mini-snow>
-    <mini-rain v-show="isRain"></mini-rain>
+  <main :style="backgroundStyle" class="h-100">
+    <mini-snow v-if="isSnow"></mini-snow>
+    <mini-rain v-else-if="isRain"></mini-rain>
 
     <div class="weather-wrap" v-if="weatherData.main !== undefined && weatherDaily.list !== undefined">
       <div class="location-box">
@@ -224,7 +224,6 @@ export default {
 </script>
 <style scoped>
 main {
-  height: 100%;
   font-family: "montserrat", sans-serif;
   padding: 25px;
   transition: 0.4s;

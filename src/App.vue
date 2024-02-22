@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="h-100">
     <div id="header">
       <mini-header></mini-header>
     </div>
@@ -22,9 +22,24 @@ export default {
   }),
 };
 </script>
+
 <style lang="scss">
 @import "@/css/common/reset.css";
-.v-app {
-  position: relative;
+
+/* 추가한 스타일 */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+#app {
+  height: 100%;
+}
+
+.v-application {
+  height: 100%;
 }
 </style>

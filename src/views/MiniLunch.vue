@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div class="container"></div>
 </template>
 <script>
 import lunch_store from "@/store/modules/lunch";
@@ -164,4 +164,11 @@ export default {
   },
 };
 </script>
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.container {
+  width: 100%;
+  height: 100%;
+  background: black;
+  background-size: cover;
+}
+</style>
