@@ -1,5 +1,5 @@
 <template>
-  <v-app class="h-100">
+  <v-app class="h-screen">
     <div id="header">
       <mini-header></mini-header>
     </div>
@@ -32,9 +32,12 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 #app {
+  overflow-x: hidden;
+  overflow-y: auto;
   height: 100%;
 }
 
