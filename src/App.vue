@@ -1,5 +1,5 @@
 <template>
-  <v-app class="h-screen">
+  <v-app>
     <div id="header">
       <mini-header></mini-header>
     </div>
@@ -32,16 +32,21 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 
 #app {
-  overflow-x: hidden;
-  overflow-y: auto;
-  height: 100%;
+  min-height: 100vh;
+  overflow-y: auto; /* 내용이 넘칠 때 스크롤 표시 */
+  position: relative; /* 부모의 높이 기준으로 설정 */
 }
 
 .v-application {
-  height: 100%;
+  min-height: 100vh;
+  position: relative; /* 부모의 높이 기준으로 설정 */
+}
+
+/* 내용이 넘칠 때 스크롤바 디자인을 숨김 */
+#app::-webkit-scrollbar {
+  display: none;
 }
 </style>
