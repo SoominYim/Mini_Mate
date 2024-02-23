@@ -144,6 +144,7 @@ export default {
     const htmlElement = document.querySelector("html");
     // 가져온 HTML 요소를 조작하거나 속성을 설정합니다.
     htmlElement.style.background = this.backgroundStyle;
+    console.log(htmlElement);
   },
   computed: {
     ...mapState("weatherStore", ["url_base", "months", "days", "weatherData", "weatherDaily"]),

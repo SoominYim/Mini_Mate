@@ -28,7 +28,7 @@ export default {
 
 /* 추가한 스타일 */
 // html {
-//   background-color: #101010 !important;
+//   background-color: #424242 !important;
 // }
 
 body {
@@ -40,7 +40,6 @@ body {
 
 #app {
   overflow: auto;
-  height: 100vh;
   min-height: 100vh;
   position: relative; /* 부모의 높이 기준으로 설정 */
 }
