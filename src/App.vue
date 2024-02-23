@@ -36,7 +36,7 @@ body {
 
 #app {
   overflow: auto;
-  height: auto;
+  height: 100vh;
   min-height: 100vh;
   position: relative; /* 부모의 높이 기준으로 설정 */
 }
