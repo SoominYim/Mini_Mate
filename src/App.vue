@@ -27,9 +27,9 @@ export default {
 @import "@/css/common/reset.css";
 
 /* 추가한 스타일 */
-// html {
-//   background-color: #424242 !important;
-// }
+html {
+  background-color: #424242 !important;
+}
 
 body {
   height: 100%;

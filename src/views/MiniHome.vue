@@ -139,13 +139,7 @@ export default {
       model: null,
     };
   },
-  mounted() {
-    // 최상위 HTML 요소 가져오기
-    const htmlElement = document.querySelector("html");
-    // 가져온 HTML 요소를 조작하거나 속성을 설정합니다.
-    htmlElement.style.background = this.backgroundStyle;
-    console.log(htmlElement);
-  },
+
   computed: {
     ...mapState("weatherStore", ["url_base", "months", "days", "weatherData", "weatherDaily"]),
     ...mapGetters("weatherStore", ["getDate"]),
@@ -173,6 +167,8 @@ export default {
     },
     isSnow() {
       // 날씨 데이터에서 첫 번째 요소가 'Snow'인지 확인
+      // 최상위 HTML 요소 가져오기
+      console.log(this.weatherData);
       return (
         this.weatherData &&
         this.weatherData.weather &&
@@ -215,7 +211,7 @@ export default {
     this.fetchData(); // 현재 날씨 데이터 가져오기
     this.fetchDataDaily(); // 일일 날씨 예보 데이터 가져오기
   },
-
+  mounted() {},
   unmounted() {},
   methods: {
     ...mapActions("weatherStore", ["fetchData", "fetchDataDaily"]),
