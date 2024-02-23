@@ -1,6 +1,6 @@
 <template>
   <mini-star v-show="new Date().getHours() >= 20 || new Date().getHours() < 6"></mini-star>
-  <main :style="backgroundStyle" class="h-100">
+  <main :style="{ background: backgroundStyle }" class="h-100">
     <mini-snow v-if="isSnow"></mini-snow>
     <mini-rain v-else-if="isRain"></mini-rain>
 
@@ -139,6 +139,12 @@ export default {
       model: null,
     };
   },
+  mounted() {
+    // 최상위 HTML 요소 가져오기
+    const htmlElement = document.querySelector("html");
+    // 가져온 HTML 요소를 조작하거나 속성을 설정합니다.
+    htmlElement.style.background = this.backgroundStyle;
+  },
   computed: {
     ...mapState("weatherStore", ["url_base", "months", "days", "weatherData", "weatherDaily"]),
     ...mapGetters("weatherStore", ["getDate"]),
@@ -186,23 +192,20 @@ export default {
     backgroundStyle() {
       const currentTime = new Date().getHours();
       if (currentTime >= 6 && currentTime < 9) {
-        return { background: "linear-gradient(to bottom, rgba(220, 66, 37, 0.6), rgba(0, 47, 75, 0.8))" }; // 06:00 ~ 09:00
+        return "linear-gradient(to bottom, rgba(220, 66, 37, 0.6), rgba(0, 47, 75, 0.8))"; // 06:00 ~ 09:00
       } else if (currentTime >= 9 && currentTime < 12) {
-        return {
-          background:
-            "linear-gradient(rgba(56, 127, 251, 0.8) 0%, rgba(52, 196, 255, 0.8) 30%, rgba(255, 198, 208, 0.8) 75%, rgba(255, 206, 170, 0.8) 95%)",
-        }; // 09:00 ~ 12:00
+        return "linear-gradient(rgba(56, 127, 251, 0.8) 0%, rgba(52, 196, 255, 0.8) 30%, rgba(255, 198, 208, 0.8) 75%, rgba(255, 206, 170, 0.8) 95%)"; // 09:00 ~ 12:00
       } else if (currentTime >= 12 && currentTime < 17) {
         // 비 또는 눈이 오는지 확인
         if (!this.isSnow || !this.isRain) {
-          return { background: "linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75))" }; // 비 또는 눈이 오는 경우
+          return "linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75))"; // 비 또는 눈이 오는 경우
         } else {
-          return { background: "linear-gradient(to bottom, rgba(179, 140, 34, 0.75), rgba(236, 95, 24, 0.75))" }; // 비 또는 눈이 오지 않는 경우
+          return "linear-gradient(to bottom, rgba(179, 140, 34, 0.75), rgba(236, 95, 24, 0.75))"; // 비 또는 눈이 오지 않는 경우
         }
       } else if (currentTime >= 17 && currentTime < 20) {
-        return { background: "linear-gradient(to bottom, rgba(0, 47, 75, 0.8), rgba(220, 66, 37, 0.6))" }; // 17:00 ~ 20:00
+        return "linear-gradient(to bottom, rgba(0, 47, 75, 0.8), rgba(220, 66, 37, 0.6))"; // 17:00 ~ 20:00
       } else {
-        return { background: "linear-gradient(315deg, #2d3436 30%, #000000 74%)" }; // 20:00 ~ 06:00
+        return "linear-gradient(315deg, #2d3436 30%, #000000 74%)"; // 20:00 ~ 06:00
       }
     },
   },
@@ -211,7 +214,7 @@ export default {
     this.fetchData(); // 현재 날씨 데이터 가져오기
     this.fetchDataDaily(); // 일일 날씨 예보 데이터 가져오기
   },
-  mounted() {},
+
   unmounted() {},
   methods: {
     ...mapActions("weatherStore", ["fetchData", "fetchDataDaily"]),
