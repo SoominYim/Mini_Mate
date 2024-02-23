@@ -27,14 +27,15 @@ export default {
 @import "@/css/common/reset.css";
 
 /* 추가한 스타일 */
-html,
 body {
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 #app {
+  overflow: auto;
   height: auto;
   min-height: 100vh;
   position: relative; /* 부모의 높이 기준으로 설정 */
