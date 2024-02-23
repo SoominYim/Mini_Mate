@@ -166,9 +166,6 @@ export default {
       return this.weatherDaily.list.slice(startIndex);
     },
     isSnow() {
-      // 날씨 데이터에서 첫 번째 요소가 'Snow'인지 확인
-      // 최상위 HTML 요소 가져오기
-      console.log(this.weatherData);
       return (
         this.weatherData &&
         this.weatherData.weather &&
@@ -177,7 +174,6 @@ export default {
       );
     },
     isRain() {
-      // 날씨 데이터에서 첫 번째 요소가 'Rain'인지 확인
       return (
         this.weatherData &&
         this.weatherData.weather &&
