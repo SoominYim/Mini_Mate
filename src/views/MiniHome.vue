@@ -1,8 +1,8 @@
 <template>
   <mini-star v-show="new Date().getHours() >= 20 || new Date().getHours() < 6"></mini-star>
   <main :style="{ background: backgroundStyle }" class="h-100">
-    <mini-snow v-if="isSnow === true"></mini-snow>
-    <mini-rain v-else-if="isRain === true"></mini-rain>
+    <mini-snow v-if="isSnow"></mini-snow>
+    <mini-rain v-else-if="isRain"></mini-rain>
 
     <div class="weather-wrap" v-if="weatherData.main !== undefined && weatherDaily.list !== undefined">
       <div class="location-box">
@@ -145,9 +145,7 @@ export default {
     ...mapGetters("weatherStore", ["getDate"]),
     filteredWeatherList() {
       if (this.weatherDaily.list && this.weatherDaily.list.length > 0) {
-        // 현재 시간
         const currentTime = new Date();
-        // 오늘 날짜를 구합니다.
         const currentDateString = currentTime.toISOString().slice(0, 10);
 
         // 현재 시간 이후의 데이터 인덱스 찾기
