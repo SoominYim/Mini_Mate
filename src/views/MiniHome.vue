@@ -1,6 +1,6 @@
 <template>
   <mini-star v-show="new Date().getHours() >= 20 || new Date().getHours() < 6"></mini-star>
-  <main :style="{ background: backgroundStyle }" class="h-100">
+  <main :style="{ background: backgroundStyle }" class="h-120">
     <mini-snow v-if="isSnow"></mini-snow>
     <mini-rain v-else-if="isRain"></mini-rain>
 
@@ -222,7 +222,7 @@ export default {
 main {
   padding: 25px;
   transition: 0.4s;
-
+  overflow: hidden;
   /* 06:00 ~ 09:00 */
   /* background-image: linear-gradient(to bottom, rgba(220, 66, 37, 0.6), rgba(0, 47, 75, 0.8)); */
   /* 09:00 ~ 12:00 */
@@ -242,35 +242,13 @@ main {
   /* 20:00 ~ 06:00 */
   /* background-image: linear-gradient(315deg, #2d3436 30%, #000000 74%); */
 }
-.search-box {
-  width: 100%;
-  margin-bottom: 30px;
-}
-.search-box .search-bar {
-  display: block;
-  width: 100%;
-  padding: 15px;
 
-  color: #313131;
-  font-size: 20px;
-  appearance: none;
-  border: none;
-  outline: none;
-  background: none;
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
-  background-color: rgba(255, 255, 255, 0.8);
-  border: rgba(0, 0, 0, 0);
-  transition: 0.4s;
-  border-radius: 0px 16px 0px 16px;
+@media all and (max-width: 767px) {
 }
-.search-box .search-bar:focus {
-  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.25);
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 16px 0px 16px 0px;
-}
+
 .location-box .location {
   color: #fff;
-  font-size: 32px;
+  font-size: 2rem;
   font-weight: 500;
   text-align: center;
   text-shadow: 1px 3px rgba(0, 0, 0, 0.25);
