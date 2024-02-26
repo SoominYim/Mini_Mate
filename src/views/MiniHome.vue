@@ -1,8 +1,8 @@
 <template>
   <mini-star v-show="new Date().getHours() >= 20 || new Date().getHours() < 6"></mini-star>
-  <main :style="{ background: backgroundStyle }" class="h-120">
-    <mini-snow v-if="isSnow"></mini-snow>
-    <mini-rain v-else-if="isRain"></mini-rain>
+  <main :style="{ background: backgroundStyle }" class="h-100">
+    <mini-snow v-if="isSnow === true"></mini-snow>
+    <mini-rain v-else-if="isRain === true"></mini-rain>
 
     <div class="weather-wrap" v-if="weatherData.main !== undefined && weatherDaily.list !== undefined">
       <div class="location-box">
@@ -39,9 +39,9 @@
           :aspect-ratio="1"
           class="mx-auto"
           cover
-          :src="`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`"
+          :src="`https://openweathermap.org/img/wn/${filteredWeatherList[0].weather[0].icon}@2x.png`"
         ></v-img>
-        <div class="weather">{{ weatherData.weather[0].main }}</div>
+        <div class="weather">{{ filteredWeatherList[0].weather[0].main }}</div>
       </div>
 
       <v-sheet class="mx-auto mt-8" elevation="3" max-width="800" theme="false" rounded>
@@ -144,44 +144,37 @@ export default {
     ...mapState("weatherStore", ["url_base", "months", "days", "weatherData", "weatherDaily"]),
     ...mapGetters("weatherStore", ["getDate"]),
     filteredWeatherList() {
-      // 현재 시간
-      const currentTime = new Date();
-      // 오늘 날짜를 구합니다.
-      const currentDateString = currentTime.toISOString().slice(0, 10);
+      if (this.weatherDaily.list && this.weatherDaily.list.length > 0) {
+        // 현재 시간
+        const currentTime = new Date();
+        // 오늘 날짜를 구합니다.
+        const currentDateString = currentTime.toISOString().slice(0, 10);
 
-      // 현재 시간 이후의 데이터 인덱스 찾기
-      let startIndex = this.weatherDaily.list.findIndex((item) => {
-        const itemDate = new Date(item.dt_txt.replace(/-/g, "/"));
-        const itemDateString = itemDate.toISOString().slice(0, 10);
-        if (itemDateString > currentDateString) return true;
-        else if (itemDateString < currentDateString) return false;
-        else {
-          return (
-            parseInt(item.dt_txt.substring(11, 13)) > currentTime.getHours() ||
-            currentTime.getHours() - item.dt_txt.substring(11, 13) <= 2
-          );
-        }
-      });
-      // 현재 시간 이후의 데이터만 필터링하여 반환
-      return this.weatherDaily.list.slice(startIndex);
+        // 현재 시간 이후의 데이터 인덱스 찾기
+        let startIndex = this.weatherDaily.list.findIndex((item) => {
+          const itemDate = new Date(item.dt_txt.replace(/-/g, "/"));
+          const itemDateString = itemDate.toISOString().slice(0, 10);
+          if (itemDateString > currentDateString) return true;
+          else if (itemDateString < currentDateString) return false;
+          else {
+            return (
+              parseInt(item.dt_txt.substring(11, 13)) > currentTime.getHours() ||
+              currentTime.getHours() - item.dt_txt.substring(11, 13) <= 2
+            );
+          }
+        });
+        // 현재 시간 이후의 데이터만 필터링하여 반환
+        return this.weatherDaily.list.slice(startIndex);
+      } else {
+        return [];
+      }
     },
     isSnow() {
-      return (
-        this.weatherData &&
-        this.weatherData.weather &&
-        this.weatherData.weather.length > 0 &&
-        this.weatherData.weather[0].main === "Snow"
-      );
+      return this.filteredWeatherList.length > 0 && this.filteredWeatherList[0].weather[0].main === "Snow";
     },
     isRain() {
-      return (
-        this.weatherData &&
-        this.weatherData.weather &&
-        this.weatherData.weather.length > 0 &&
-        this.weatherData.weather[0].main === "Rain"
-      );
+      return this.filteredWeatherList.length > 0 && this.filteredWeatherList[0].weather[0].main === "Rain";
     },
-
     backgroundStyle() {
       const currentTime = new Date().getHours();
       if (currentTime >= 6 && currentTime < 9) {
@@ -190,7 +183,7 @@ export default {
         return "linear-gradient(rgba(56, 127, 251, 0.8) 0%, rgba(52, 196, 255, 0.8) 30%, rgba(255, 198, 208, 0.8) 75%, rgba(255, 206, 170, 0.8) 95%)"; // 09:00 ~ 12:00
       } else if (currentTime >= 12 && currentTime < 17) {
         // 비 또는 눈이 오는지 확인
-        if (!this.isSnow || !this.isRain) {
+        if (this.isSnow === true || this.isRain === true) {
           return "linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75))"; // 비 또는 눈이 오는 경우
         } else {
           return "linear-gradient(to bottom, rgba(179, 140, 34, 0.75), rgba(236, 95, 24, 0.75))"; // 비 또는 눈이 오지 않는 경우
