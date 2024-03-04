@@ -325,6 +325,7 @@ main {
     font-size: 15px;
   }
   .weather-box .temp {
+    font-size: 70px;
     margin: 15px 0px;
   }
   .weather-box .weather {
