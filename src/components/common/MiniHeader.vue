@@ -4,9 +4,14 @@
     <img class="ml-3" :src="require('@/assets/mini_small.png')" height="40" />
     <v-toolbar-title class="text-h4">미니 기여어</v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-btn icon>
-      <v-icon>mdi-reply</v-icon>
-    </v-btn>
+    <v-snackbar :timeout="1500" variant="tonal" rounded="pill">
+      <template v-slot:activator="{ props }">
+        <v-btn v-bind="props" @click="copyText" icon>
+          <v-icon>mdi-reply</v-icon>
+        </v-btn>
+      </template>
+      <div class="text-center text-h4"><strong>주소가 클립보드에 복사되었습니다.</strong></div>
+    </v-snackbar>
   </v-toolbar>
   <v-navigation-drawer v-model="drawer" color="#424242">
     <v-list>
@@ -72,6 +77,9 @@ export default {
   methods: {
     navigate(item) {
       this.$router.push(item.link);
+    },
+    copyText() {
+      navigator.clipboard.writeText("https://mini-mate.vercel.app/");
     },
   },
 };

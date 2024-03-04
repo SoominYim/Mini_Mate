@@ -1,8 +1,5 @@
 <template>
-  <div class="container">
-    {{  }}
-
-  </div>
+  {{}}
 </template>
 <script>
 import lunch_store from "@/store/modules/lunch";
@@ -140,6 +137,7 @@ export default {
       };
     };
     function getChoiceFood(foods, country) {
+      console.log(getRandomFood(foods.filter((food) => food.country === country)));
       return getRandomFood(foods.filter((food) => food.country === country));
     }
 
@@ -147,9 +145,8 @@ export default {
     const choices = ["all", "korean", "chinese", "japanese", "western", "asian"];
 
     choices.forEach((choice) => {
-      if (this[`${choice}ChoiceFood`] === "") {
+      if (this[`${choice}ChoiceFood`] === "")
         this[`${choice}ChoiceFood`] = choice === "all" ? getRandomFood(foods) : getChoiceFood(foods, choice);
-      }
     });
 
     // 새로운 나라 추가시 푸시 (store에 country 추가시 자동 푸시)
