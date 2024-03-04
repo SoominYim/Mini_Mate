@@ -322,57 +322,16 @@ main {
     font-size: 1.5rem;
   }
   .location-box .date {
-    color: #fff;
     font-size: 15px;
-    font-weight: 300;
-    font-style: italic;
-    text-align: center;
-  }
-  .weather-box {
-    text-align: center;
   }
   .weather-box .temp {
-    display: inline-block;
-    padding: 10px 25px;
-    color: #fff;
-    font-size: 70px;
-    font-weight: 900;
-    text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
-    background-color: rgba(255, 255, 255, 0.25);
-    border-radius: 16px;
     margin: 15px 0px;
-    box-shadow: 3px 6px rgba(0, 0, 0, 0.25);
   }
   .weather-box .weather {
-    color: #fff;
     font-size: 48px;
-    font-weight: 700;
-    font-style: italic;
-    text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
   }
   .min_max {
     font-size: 30px;
-    text-shadow: 1px 2px rgba(0, 0, 0, 0.25);
-  }
-  .min {
-    color: #2178ef;
-  }
-  .max {
-    color: #cd3534;
-  }
-  .date-text {
-    color: #444;
-    font-size: 15px;
-    font-weight: bold;
-    white-space: pre-line;
-  }
-  .v-sheet {
-    background: rgba(255, 255, 255, 0.25);
-  }
-  .selected {
-    --v-theme-overlay-multiplier: var(--v-theme-success-overlay-multiplier);
-    background-color: rgba(255, 255, 255, 0.5) !important;
-    color: rgba(255, 255, 255, 0.5) !important;
   }
 }
 </style>
