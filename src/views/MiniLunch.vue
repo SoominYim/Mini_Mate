@@ -1,5 +1,83 @@
 <template>
-  {{}}
+  <div class="container">
+    <div class="form">
+      <!-- 전체 메뉴 -->
+      <div class="radio-box">
+        <input
+          type="radio"
+          class="radio-btn"
+          name="country_menu"
+          id="all"
+          value="all"
+          @click="radioChange($event)"
+          checked="checked"
+        />
+        <label class="radio-label" for="all">전체</label>
+        <div class="spinner"></div>
+      </div>
+      <!-- 나라별 메뉴 -->
+      <div class="radio-box" v-for="(country_menu, i) in Object.keys(groupedIndexes)" :key="i">
+        <input
+          type="radio"
+          class="radio-btn"
+          name="country_menu"
+          :id="country_menu"
+          @click="radioChange($event)"
+          :value="country_menu"
+        />
+        <label class="radio-label" :for="country_menu">
+          <span>
+            {{
+              country_menu === "korean"
+                ? "한식"
+                : country_menu === "chinese"
+                ? "중식"
+                : country_menu === "japanese"
+                ? "일식"
+                : country_menu === "western"
+                ? "양식"
+                : country_menu === "asian"
+                ? "아시안"
+                : "없는 나라"
+            }}
+          </span>
+        </label>
+
+        <div class="spinner"></div>
+      </div>
+      <span class="marker"></span>
+      <!-- 결과값 -->
+      <div class="result_wrap">
+        <span v-if="menuActive == 0">
+          {{
+            selectedCountry === "all"
+              ? "뭐든"
+              : selectedCountry === "korean"
+              ? "한식"
+              : selectedCountry === "chinese"
+              ? "중식"
+              : selectedCountry === "japanese"
+              ? "일식"
+              : selectedCountry === "western"
+              ? "양식"
+              : selectedCountry === "asian"
+              ? "아시안"
+              : "없는 나라"
+          }}
+          <br />
+          먹을거야?
+        </span>
+        <div class="result_box">
+          <span v-if="menuActive == 1">알았어.<br />{{ selectedFood }}<br />먹어</span>
+          <span v-if="menuActive == 2">다른거 못 골라.<br />{{ selectedFood }}<br />먹어</span>
+          <span v-if="menuActive == 3">못고른다고,<br />그냥<br />{{ selectedFood }}<br />먹어</span>
+          <span v-if="menuActive == 4">이럴거면 이거 왜 했어<br />{{ selectedFood }}<br />먹어</span>
+          <span v-else-if="menuActive > 4">{{ selectedFood }}<br />먹어</span>
+        </div>
+        <button type="button" @click="submitSelect()">눌 러</button>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import lunch_store from "@/store/modules/lunch";
@@ -164,4 +242,364 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+* {
+  overflow: hidden;
+}
+
+.result_wrap {
+  span {
+    color: #333;
+    font-weight: bold;
+  }
+}
+
+@media all and (min-width: 1024px) {
+  .container {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    flex-direction: column;
+    top: 5vw;
+    left: 0;
+    font-family: omyu_pretty;
+  }
+
+  label,
+  label:before,
+  label:after {
+    left: 0;
+    right: 0;
+    top: 2px;
+    bottom: 0;
+  }
+
+  .form {
+    position: relative;
+    height: 60%;
+    width: 45%;
+    display: flex;
+    margin: 50px auto;
+  }
+
+  label {
+    margin: 0 auto;
+    position: absolute;
+    width: 5vw;
+    height: 5vw;
+    border-radius: 50%;
+    padding-top: 3px;
+    background-color: var(--color-background-secondary);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25);
+    font-size: 1.5rem;
+    cursor: pointer;
+    font-family: omyu_pretty;
+
+    & + div {
+      margin: 0 auto;
+      position: absolute;
+      width: calc(5vw + 5px);
+      height: calc(5vw + 5px);
+      z-index: 0;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      border-radius: 50%;
+    }
+
+    &:hover {
+      color: var(--color-text-secondary);
+    }
+  }
+
+  .result_wrap {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 200px;
+    left: 0;
+
+    span {
+      position: absolute;
+      top: 15.8vw;
+      left: 9vw;
+      width: 11vw;
+      height: 6.8vw;
+      border-radius: 8px;
+      border: 2px solid #3b9554;
+      background-color: #fff;
+    }
+
+    button {
+      opacity: 0;
+      position: absolute;
+      top: 19.6vw;
+      left: 23.3vw;
+      width: 5.5vw;
+      height: 2.5vw;
+      cursor: pointer;
+    }
+  }
+}
+
+@media all and (min-width: 768px) and (max-width: 1024px) {
+  .container {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    flex-direction: column;
+    top: 30vw;
+    left: 0;
+  }
+
+  label,
+  label:before,
+  label:after {
+    left: 0;
+    right: 0;
+    top: 2px;
+    bottom: 0;
+  }
+
+  .form {
+    width: 95%;
+    display: flex;
+    margin: 50px auto;
+  }
+
+  label {
+    margin: 0 auto;
+    position: absolute;
+    width: 10vw;
+    height: 10vw;
+    border-radius: 50%;
+    padding-top: 3px;
+    background-color: var(--color-background-secondary);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25);
+    font-size: 1.3rem;
+    padding-top: 3vw;
+    cursor: pointer;
+    font-family: omyu_pretty;
+
+    & + div {
+      margin: 0 auto;
+      position: absolute;
+      width: calc(10vw + 5px);
+      height: calc(10vw + 5px);
+      z-index: 0;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      border-radius: 50%;
+    }
+
+    &:hover {
+      color: var(--color-text-secondary);
+    }
+  }
+
+  .result_wrap {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    span {
+      position: absolute;
+      top: 39.8vw;
+      left: 21vw;
+      width: 24.4vw;
+      height: 14.8vw;
+      border-radius: 8px;
+      border: 2px solid #3b9554;
+      background-color: #fff;
+      line-height: 3.4vw;
+      font-size: 2.9vw;
+    }
+
+    button {
+      opacity: 0;
+      position: absolute;
+
+      top: 47.6vw;
+      left: 51.3vw;
+      width: 12.5vw;
+      height: 6.5vw;
+
+      cursor: pointer;
+    }
+  }
+}
+
+@media all and (max-width: 768px) {
+  .container {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    flex-direction: column;
+    top: 32vw;
+    left: 0;
+  }
+
+  label,
+  label:before,
+  label:after {
+    left: 0;
+    right: 0;
+    top: 2px;
+    bottom: 0;
+  }
+
+  .form {
+    display: flex;
+    width: 100%;
+    margin: 50px auto;
+  }
+
+  label {
+    margin: 0 auto;
+    position: absolute;
+    width: 10vw;
+    height: 10vw;
+    border-radius: 50%;
+    background-color: var(--color-background-secondary);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25);
+    font-size: 12px;
+    padding-top: 3vw;
+    cursor: pointer;
+
+    font-family: omyu_pretty;
+
+    & + div {
+      margin: 0 auto;
+      position: absolute;
+      width: calc(10vw + 5px);
+      height: calc(10vw + 5px);
+      z-index: 0;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      border-radius: 50%;
+    }
+
+    &:hover {
+      color: var(--color-text-secondary);
+    }
+  }
+
+  .radio-box {
+    width: 20vw;
+    height: 10vw;
+    position: relative;
+    text-align: center;
+  }
+
+  .result_wrap {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    span {
+      position: absolute;
+      top: 46.5vw;
+      left: 18.9vw;
+      width: 26.4vw;
+      height: 16.1vw;
+      border-radius: 5px;
+      border: 2px solid #3b9554;
+      background-color: #fff;
+      line-height: 4vw;
+      font-size: 2vw;
+    }
+
+    button {
+      opacity: 0;
+      position: absolute;
+      top: 55.5vw;
+      left: 51.3vw;
+      width: 13.1vw;
+      height: 5.5vw;
+      cursor: pointer;
+    }
+  }
+}
+
+.result_wrap {
+  animation: fadeIn 0.5s 1.8s ease-in forwards;
+  opacity: 0;
+
+  span {
+    font-family: omyu_pretty;
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
+  position: absolute;
+}
+
+.radio-box {
+  width: 20vw;
+  height: 20vw;
+  position: relative;
+  text-align: center;
+}
+
+.radio-label {
+  z-index: 1;
+}
+
+.radio-btn:checked + label + div {
+  background-image: conic-gradient(transparent, var(--spinner));
+  animation: spin 2s linear infinite;
+}
+
+@keyframes dot-anim {
+  0% {
+    top: 0vw;
+  }
+
+  50% {
+    top: 2vw;
+  }
+
+  100% {
+    top: 0vw;
+  }
+}
+
+.radio-btn:checked + label {
+  color: var(--color-accent);
+}
+
+label:hover:before {
+  box-shadow: rgba(0, 0, 0, 0.0784314) 0 0 1vw 0, rgba(0, 0, 0, 0.239216) 0 1vw 1vw 0;
+}
+
+[type="radio"] {
+  display: none;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>

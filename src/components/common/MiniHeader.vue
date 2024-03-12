@@ -8,6 +8,7 @@
       <template v-slot:activator="{ props }">
         <v-btn v-bind="props" @click="copyText" icon>
           <v-icon>mdi-reply</v-icon>
+          <v-tooltip class="text-h4" activator="parent" location="start"><strong>공유하기</strong></v-tooltip>
         </v-btn>
       </template>
       <div class="text-center text-h4"><strong>주소가 클립보드에 복사되었습니다.</strong></div>
