@@ -1,13 +1,23 @@
-<template lang="">
-  <div>
-  
-  </div>
+<template>
+  <div></div>
 </template>
+
 <script>
 export default {
-
-}
+  name: "MiniCoffee",
+  components: {},
+  data() {
+    return {
+      sampleData: "",
+    };
+  },
+  computed: {},
+  setup() {},
+  created() {},
+  mounted() {},
+  unmounted() {},
+  methods: {},
+};
 </script>
-<style lang="">
-  
-</style>
+
+<style scoped></style>

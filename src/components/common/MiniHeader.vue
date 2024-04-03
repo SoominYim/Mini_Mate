@@ -80,7 +80,7 @@ export default {
       this.$router.push(item.link);
     },
     copyText() {
-      navigator.clipboard.writeText("https://mini-mate.vercel.app/");
+      navigator.clipboard.writeText(window.location.href);
     },
   },
 };
