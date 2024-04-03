@@ -69,6 +69,10 @@
       margin: 0 auto;
       width: 50%;
       height: 100px;
+      &:disabled {
+        background-color: #888;
+        pointer-events: none;
+      }
     }
   }
 }
