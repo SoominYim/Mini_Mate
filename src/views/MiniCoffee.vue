@@ -1,5 +1,12 @@
 <template>
-  <div></div>
+  <div class="container">
+    <span>인원을 추가해주세요</span>
+    <div class="input-box">
+      <input type="text" ref="peopleInput" :style="{ background: 'red' }" @keydown.enter="addPeople" />
+      <button @click="addPeople">추가</button>
+    </div>
+    <div v-for="(p, i) in people" :key="i">{{ p }}</div>
+  </div>
 </template>
 
 <script>
@@ -8,7 +15,7 @@ export default {
   components: {},
   data() {
     return {
-      sampleData: "",
+      people: [213, 123, 3435, 54624, 234],
     };
   },
   computed: {},
@@ -16,8 +23,17 @@ export default {
   created() {},
   mounted() {},
   unmounted() {},
-  methods: {},
+  methods: {
+    addPeople() {
+      this.people.push(this.$refs.peopleInput.value);
+      this.$refs.peopleInput.value = "";
+    },
+  },
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.container {
+  display: flex;
+}
+</style>

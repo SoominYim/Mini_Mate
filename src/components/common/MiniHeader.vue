@@ -2,7 +2,7 @@
   <v-toolbar density="compact" border :elevation="8" theme="dark" with-background fixed app>
     <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
     <img class="ml-3" :src="require('@/assets/mini_small.png')" height="40" />
-    <v-toolbar-title class="text-h4">미니 기여어</v-toolbar-title>
+    <v-toolbar-title class="text-h4">{{ currentTitle }}</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-snackbar :timeout="1500" variant="tonal" rounded="pill">
       <template v-slot:activator="{ props }">
@@ -17,7 +17,7 @@
   <v-navigation-drawer v-model="drawer" color="#424242">
     <v-list>
       <v-list-item class="mb-2" :prepend-avatar="require('@/assets/mini_profile.png')">
-        <v-list-item-title class="미니기여어"> 미니 기여어 </v-list-item-title>
+        <v-list-item-title class="미니기여어"> {{ currentTitle }} </v-list-item-title>
       </v-list-item>
       <v-divider></v-divider>
       <v-list-item
@@ -73,7 +73,15 @@ export default {
           link: "https://s-o-o-min.tistory.com/",
         },
       ],
+      currentTitle: "",
     };
+  },
+  computed: {},
+  watch: {
+    $route() {
+      const foundItem = this.menuItems.find((item) => item.link === window.location.pathname);
+      this.currentTitle = foundItem.title === "홈" ? "미니기여어" : foundItem.title;
+    },
   },
   methods: {
     navigate(item) {
