@@ -60,6 +60,7 @@ export default {
         { icon: "mdi-home", link: "/", title: "홈" },
         { icon: "mdi-food", link: "/lunch", title: "뭐 먹 지" },
         { icon: "mdi-coffee", link: "/coffee", title: "커 피 사 줘" },
+        { icon: " mdi-nintendo-game-boy", link: "/tetris", title: "테 트 리 스" },
       ],
       aboutItems: [
         { icon: "mdi-github", link: "https://github.com/SoominYim" },
