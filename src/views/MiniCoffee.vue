@@ -24,6 +24,11 @@
     </div>
     <button v-if="choice === ''" @click="choicePeople">커피 살 사람?</button>
     <button :disabled="isButtonDisabled" v-else @click="rePeople">{{ reTitle }}</button>
+
+    <p :style="{ fontSize: '24px', color: `red` }" v-if="isPeopleError">2명 이상이어야 합니다</p>
+    <p :style="{ fontSize: '24px', color: `red` }" v-if="isDuplicationError">
+      중복 이름은 구분지어 주세요 <br />(ex: 홍길동1,홍길동2)
+    </p>
   </div>
 </template>
 
@@ -33,12 +38,13 @@ export default {
   components: {},
   data() {
     return {
-      people: [2321, 23213, 4342, 123],
+      people: [],
       choice: "",
-      reTitle: "",
-
+      reTitle: "커피 살 사람?",
       isButtonDisabled: false,
       boxHeight: 0,
+      isPeopleError: false,
+      isDuplicationError: false,
     };
   },
   computed: {},
@@ -48,16 +54,24 @@ export default {
   unmounted() {},
   methods: {
     addPeople() {
+      if (this.$refs.peopleInput.value.length < 1) return;
+      if (this.people.includes(this.$refs.peopleInput.value)) {
+        this.isDuplicationError = true;
+        return;
+      } else {
+        this.isDuplicationError = false;
+      }
+
       if (this.$refs.peopleInput.value.length > 0) this.people.push(this.$refs.peopleInput.value.replaceAll(" ", ""));
+      if (this.isPeopleError && this.people.length === 2) this.isPeopleError = false;
       this.$refs.peopleInput.value = "";
     },
     delPeople(i) {
       this.people.splice(i, 1);
     },
     choicePeople() {
-      if (this.people >= 0) return;
+      if (this.people.length < 2) return (this.isPeopleError = true);
 
-      this.reTitle = "뽑는중...";
       this.choice = "뽑는중...";
       this.isButtonDisabled = true;
 

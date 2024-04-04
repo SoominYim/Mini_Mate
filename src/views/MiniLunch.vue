@@ -50,7 +50,7 @@
       </div>
       <span class="marker"></span>
       <!-- 결과값 -->
-      <button :disabled="isButtonDisabled" type="button" @click="submitSelect()">뭐 먹지?</button>
+      <button :disabled="isButtonDisabled" type="button" @click="submitSelect()">{{ btnTitle }}</button>
     </div>
   </div>
 </template>
@@ -71,6 +71,7 @@ export default {
 
       displayText: "종류를 선택하세요",
       isButtonDisabled: false,
+      btnTitle: "뭐 먹지?",
     };
   },
   methods: {
@@ -93,10 +94,12 @@ export default {
         this.selectedCountry === "all" ? this.allChoiceFood.food : this[`${this.selectedCountry}ChoiceFood`].food;
 
       this.displayText = "뽑는중...";
+      this.btnTitle = "뽑는중...";
       this.isButtonDisabled = true;
       setTimeout(() => {
         this.displayText = this.selectedFood;
         this.isButtonDisabled = false;
+        this.btnTitle = "다시 뽑기";
       }, 2000);
     },
   },
