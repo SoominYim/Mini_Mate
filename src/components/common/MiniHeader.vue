@@ -2,7 +2,7 @@
   <v-toolbar density="compact" border :elevation="8" theme="dark" with-background fixed app>
     <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
     <img class="ml-3" :src="require('@/assets/mini_small.png')" height="40" />
-    <v-toolbar-title class="text-h4">{{ currentTitle }}</v-toolbar-title>
+    <v-toolbar-title class="text-h4" style="font-weight: bold">{{ currentTitle }}</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-snackbar :timeout="1500" variant="tonal" rounded="pill">
       <template v-slot:activator="{ props }">
@@ -33,6 +33,9 @@
         </v-list-item-title>
       </v-list-item>
       <v-divider></v-divider>
+      <v-list-item class="subMenu" prepend-icon="mdi-gamepad-variant-outline">
+        <v-list-item-title class="미니기여어"> 게임 </v-list-item-title>
+      </v-list-item>
       <v-list-item
         prepend-icon="mdi-nintendo-game-boy"
         append-icon="mdi-open-in-new"
@@ -53,6 +56,7 @@
           :key="item.icon"
           :icon="item.icon"
           variant="text"
+          rel="noopener noreferrer"
         ></v-btn>
       </div>
       <div class="d-flex text-h6 justify-center">
@@ -118,8 +122,11 @@ div {
 }
 .미니기여어 {
   font-size: 2.2rem !important;
+  font-weight: bold;
 }
-
+.subMenu {
+  font-size: 2rem;
+}
 .v-spacer {
   flex-grow: 0 !important;
 }
