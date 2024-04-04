@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from "vue-router";
 import MiniHome from "../views/MiniHome";
 import MiniLunch from "@/views/MiniLunch";
 import MiniCoffee from "@/views/MiniCoffee";
-import MiniTetris from "@/views/MiniTetris";
 
 const routes = [
   {
@@ -19,11 +18,6 @@ const routes = [
     path: "/coffee",
     name: "coffee",
     component: MiniCoffee,
-  },
-  {
-    path: "/tetris",
-    name: "tetris",
-    component: MiniTetris,
   },
 ];
 

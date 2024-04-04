@@ -32,6 +32,17 @@
           {{ item.title }}
         </v-list-item-title>
       </v-list-item>
+      <v-divider></v-divider>
+      <v-list-item
+        prepend-icon="mdi-nintendo-game-boy"
+        append-icon="mdi-open-in-new"
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://soominyim.github.io/vue-tetris/"
+        variant="text"
+      >
+        <v-list-item-title> 테 트 리 스 </v-list-item-title>
+      </v-list-item>
     </v-list>
     <template v-slot:append>
       <div class="d-flex justify-space-around">
@@ -60,7 +71,7 @@ export default {
         { icon: "mdi-home", link: "/", title: "홈" },
         { icon: "mdi-food", link: "/lunch", title: "뭐 먹 지" },
         { icon: "mdi-coffee", link: "/coffee", title: "커 피 사 줘" },
-        { icon: " mdi-nintendo-game-boy", link: "/tetris", title: "테 트 리 스" },
+        // { icon: "mdi-nintendo-game-boy", link: "/tetris", title: "테 트 리 스" },
       ],
       aboutItems: [
         { icon: "mdi-github", link: "https://github.com/SoominYim" },
