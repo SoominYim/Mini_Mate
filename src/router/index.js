@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import MiniHome from "../views/MiniHome";
 import MiniLunch from "@/views/MiniLunch";
 import MiniCoffee from "@/views/MiniCoffee";
+import MiniPdf from "@/views/MiniPdf";
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: "/coffee",
     name: "coffee",
     component: MiniCoffee,
+  },
+  {
+    path: "/pdf",
+    name: "pdf",
+    component: MiniPdf,
   },
 ];
 

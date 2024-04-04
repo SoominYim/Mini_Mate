@@ -2,7 +2,7 @@
   <v-toolbar density="compact" border :elevation="8" theme="dark" with-background fixed app>
     <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
     <img class="ml-3" :src="require('@/assets/mini_small.png')" height="40" />
-    <v-toolbar-title class="text-h4" style="font-weight: bold">{{ currentTitle }}</v-toolbar-title>
+    <v-toolbar-title class="text-h4">{{ currentTitle }}</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-snackbar :timeout="1500" variant="tonal" rounded="pill">
       <template v-slot:activator="{ props }">
@@ -75,7 +75,7 @@ export default {
         { icon: "mdi-home", link: "/", title: "홈" },
         { icon: "mdi-food", link: "/lunch", title: "뭐 먹 지" },
         { icon: "mdi-coffee", link: "/coffee", title: "커 피 사 줘" },
-        // { icon: "mdi-nintendo-game-boy", link: "/tetris", title: "테 트 리 스" },
+        { icon: "mdi-coffee", link: "/pdf", title: "PDF TO HTML" },
       ],
       aboutItems: [
         { icon: "mdi-github", link: "https://github.com/SoominYim" },
@@ -121,11 +121,10 @@ div {
   font-size: 1.7rem !important;
 }
 .미니기여어 {
-  font-size: 2.2rem !important;
-  font-weight: bold;
+  font-size: 2.1rem !important;
 }
 .subMenu {
-  font-size: 2rem;
+  font-size: 1.8rem;
 }
 .v-spacer {
   flex-grow: 0 !important;
