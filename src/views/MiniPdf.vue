@@ -1,62 +1,73 @@
 <template>
   <div class="pdfContainer" style="text-align: center">
-    <div v-if="!isFile">
-      <label for="choice">개별 선택</label>
-      <input type="radio" name="selectionType" id="choice" v-model="selectionType" value="choice" />
-      <label for="range">범위 선택</label>
-      <input type="radio" name="selectionType" id="range" v-model="selectionType" value="range" />
+    <div class="header">
+      <div v-if="!isFile">
+        <input type="radio" name="selectionType" id="choice" v-model="selectionType" value="choice" />
+        <label for="choice">개별 선택</label>
+        <input type="radio" name="selectionType" id="range" v-model="selectionType" value="range" />
+        <label for="range">범위 선택</label>
+      </div>
+      <ul class="tool-bar" style="display: flex; justify-content: center; list-style-type: none; gap: 10px">
+        <li v-if="isFile">
+          <p>{{ fileName }}.pdf</p>
+        </li>
+
+        <li style="margin-right: 5px" v-if="!isFile" class="file_wrap">
+          <input id="file" type="file" accept=".pdf" @change="changeFile" />
+          <label for="file">파일 첨부</label>
+        </li>
+        <li v-if="isFile && selectionType == 'choice'" class="page_wrap">
+          <button @click="page = page > 1 ? page - 1 : page">&lt;</button>
+          <input
+            type="text"
+            :value="page"
+            @keydown.enter="changePage"
+            @focusout="resetPage"
+            style="width: 50px; text-align: right"
+          />
+          /
+          {{ pages }}
+          <button @click="page = page < pages ? page + 1 : page">&gt;</button>
+        </li>
+        <li v-if="isFile && selectionType == 'range'" class="rangePage_wrap">
+          <span style="margin-right: 5px">total : {{ pages }}</span>
+          <input
+            type="text"
+            id="startPage"
+            :value="startPage"
+            @keydown.enter="updateStartPages"
+            @focusout="resetStartPage"
+          />
+          /
+          <input
+            type="text"
+            id="lastPage"
+            :value="lastPage"
+            @keydown.enter="updateLastPages"
+            @focusout="resetLastPage"
+          />
+        </li>
+        <li v-if="isFile" class="scale_wrap">
+          <button @click="scale = scale > 0.5 ? scale - 0.5 : scale">-</button>
+          <span for="magnification">{{ Math.round(scale * 100) }}%</span>
+          <button @click="scale = scale < 4 ? scale + 0.5 : scale">+</button>
+        </li>
+        <li v-if="isFile && selectionType == 'choice'" class="choice_wrap">
+          <span v-for="(p, i) in selectedPage" :key="i">{{ p.page }}</span>
+          <button @click="selectChoicePage">선택</button>
+        </li>
+
+        <li v-if="isFile && selectionType == 'choice'" class="export_wrap">
+          <button @click="exportChoiceHTML">내보내기</button>
+        </li>
+        <li v-if="isFile && selectionType == 'range'" class="export_wrap">
+          <button @click="exportRangeHTML">내보내기</button>
+        </li>
+        <li v-if="isFile && selectionType == 'range'">
+          <span style="color: red"> * 렌더링이 완료되면 눌러주세요 </span>
+        </li>
+      </ul>
     </div>
-    <ul class="tool-bar" style="display: flex; justify-content: center; list-style-type: none; gap: 10px">
-      <li>
-        <input type="file" accept=".pdf" @change="changeFile" />
-      </li>
-      <li v-if="isFile && selectionType == 'choice'">
-        <button @click="page = page > 1 ? page - 1 : page">Prev</button>
-        <input
-          type="text"
-          :value="page"
-          @keydown.enter="changePage"
-          @focusout="resetPage"
-          style="width: 50px; text-align: right"
-        />
-        /
-        {{ pages }}
-        <button @click="page = page < pages ? page + 1 : page">Next</button>
-      </li>
-      <li v-if="isFile">
-        <button @click="scale = scale > 1 ? scale - 0.5 : scale">-</button>
-        <span for="magnification">{{ Math.round(scale * 100) }}%</span>
-        <button @click="scale = scale < 4 ? scale + 0.5 : scale">+</button>
-      </li>
-      <li v-if="isFile && selectionType == 'choice'">
-        <span>선택 : {{ selectedPage.map((v) => v.page) }}</span>
-        <button @click="selectChoicePage">선택</button>
-      </li>
-      <li v-if="isFile && selectionType == 'range'">
-        <span style="color: red">* 과도한 조정 시 오버플로우가 발생합니다. </span>전체 페이지 :{{ pages }}
-      </li>
-      <li v-if="isFile && selectionType == 'range'">
-        <label for="startPage">Start Page:</label>
-        <input
-          type="text"
-          id="startPage"
-          :value="startPage"
-          @keydown.enter="updateStartPages"
-          @focusout="resetStartPage"
-        />
-      </li>
-      <li v-if="isFile && selectionType == 'range'">
-        <label for="lastPage">Last Page:</label>
-        <input type="text" id="lastPage" :value="lastPage" @keydown.enter="updateLastPages" @focusout="resetLastPage" />
-      </li>
-      <li v-if="isFile && selectionType == 'choice'">
-        <button @click="exportChoiceHTML">내보내기</button>
-      </li>
-      <li v-if="isFile && selectionType == 'range'">
-        <button @click="exportRangeHTML">내보내기</button>
-        <span style="color: red"> * 렌더링이 완료되면 눌러주세요. </span>
-      </li>
-    </ul>
     <div
       v-if="selectionType == 'range'"
       class="content"
@@ -64,7 +75,10 @@
       :style="{ width: 'fit-content', margin: '0 auto' }"
     >
       <div class="pdf_wrap" v-for="page in filteredPages" :key="page">
-        <VuePDF ref="vuePDFRef" :scale="scale" :pdf="pdf" :page="page" text-layer />
+        <VuePDF @loaded="onLoaded" ref="vuePDFRef" :scale="scale" :pdf="pdf" :page="page" :text-layer="text_layer">
+          <div class="loading-overlay">
+            <div class="loader"></div></div
+        ></VuePDF>
       </div>
     </div>
     <div
@@ -73,18 +87,26 @@
       ref="content"
       :style="{ width: 'fit-content', margin: '0 auto' }"
     >
-      <VuePDF ref="vuePDFRef" :scale="scale" :pdf="pdf" :page="page" text-layer />
+      <div class="pdf_wrap">
+        <VuePDF @loaded="onLoaded" ref="vuePDFRef" :scale="scale" :pdf="pdf" :page="page" :text-layer="text_layer"
+          ><div class="loading-overlay">
+            <div class="loader"></div>
+          </div>
+        </VuePDF>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, computed } from "vue";
 import { VuePDF, usePDF } from "@tato30/vue-pdf";
 import JSZip from "jszip";
 import cssContent from "../css/pdf/style";
 const file = ref(null);
 const { pdf, pages } = usePDF(file);
+
+const text_layer = ref(true);
 
 const scale = ref(1);
 const page = ref(1);
@@ -103,7 +125,7 @@ function changeFile(event) {
   }
 }
 
-onMounted(() => {
+const removeBrTags = () => {
   const observer = new MutationObserver((mutationsList) => {
     mutationsList.forEach((mutation) => {
       if (mutation.addedNodes) {
@@ -116,18 +138,18 @@ onMounted(() => {
     });
   });
 
-  const contentElement = document.querySelector(".content");
-  observer.observe(contentElement, { childList: true, subtree: true });
-});
+  const pdfWrapElements = document.querySelectorAll(".pdf_wrap");
+  pdfWrapElements.forEach((pdfWrapElement) => {
+    observer.observe(pdfWrapElement, { childList: true, subtree: true });
+  });
+};
 
 let isCtrl = false;
-
 document.addEventListener("keydown", function (e) {
   if (e.which === 17) {
     isCtrl = true;
   }
 });
-
 document.addEventListener("keyup", function (e) {
   if (e.which === 17) {
     isCtrl = false;
@@ -140,7 +162,7 @@ document.addEventListener(
     if (isCtrl) {
       e.preventDefault();
       if (e.deltaY > 0) {
-        if (scale.value > 1) {
+        if (scale.value > 0.5) {
           scale.value -= 0.5;
         }
       } else if (e.deltaY < 0) {
@@ -169,11 +191,42 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
+/**
+ * @param {string} a
+ * @param {string} b
+ * @param {string} c
+ */
+
+function removeEl(parentNode, a, b, c) {
+  const elementsToRemove = parentNode.querySelectorAll(a);
+  const elementsToRemoveClasses = parentNode.querySelectorAll(b);
+  const elementsToRemoveStyle = parentNode.querySelectorAll(c);
+  elementsToRemoveClasses.forEach((element) => {
+    element.classList = "";
+  });
+  elementsToRemove.forEach((element) => element.parentNode.removeChild(element));
+  elementsToRemoveStyle.forEach((element) => {
+    element.removeAttribute("style");
+  });
+}
+
+let wheelTimer; // 휠 이벤트 종료를 감지하기 위한 타이머 변수
+
+function onLoaded() {
+  removeBrTags();
+  text_layer.value = false;
+
+  clearTimeout(wheelTimer);
+  wheelTimer = setTimeout(() => {
+    text_layer.value = true;
+  }, 500);
+}
+
 // common END
 
 // 개별 선택 START
 const startPage = ref(1);
-const lastPage = ref(5);
+const lastPage = ref(1);
 
 function changePage(e) {
   e.target.value > pages.value || e.target.value < 1 ? (e.target.value = page.value) : (page.value = +e.target.value);
@@ -207,18 +260,12 @@ function exportChoiceHTML() {
   selectedPage.value.forEach((v) => {
     // 페이지 별로 HTML 복제 및 수정
     const contentHTML = document.querySelector("html").cloneNode(true);
-    const elementsToRemove = contentHTML.querySelectorAll(
-      "#header, .tool-bar, script, style, .v-overlay-container, link[href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css'], link[href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap'], noscript"
-    );
-    const elementsToRemoveClasses = contentHTML.querySelectorAll(".v-application");
-    const elementsToRemoveStyle = contentHTML.querySelectorAll(".v-main");
-    elementsToRemoveClasses.forEach((element) => {
-      element.classList = "";
-    });
-    elementsToRemove.forEach((element) => element.parentNode.removeChild(element));
-    elementsToRemoveStyle.forEach((element) => {
-      element.removeAttribute("style");
-    });
+    const elReSelector =
+      "#header, .header, script, style, .v-overlay-container, link[href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css'], link[href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap'], noscript";
+    const elReClassSelector = ".v-application";
+    const elReStyleSelector = ".v-main";
+
+    removeEl(contentHTML, elReSelector, elReClassSelector, elReStyleSelector);
 
     const linkElement = document.createElement("link");
     linkElement.rel = "stylesheet";
@@ -266,6 +313,7 @@ function exportChoiceHTML() {
 // 개별 선택 END
 
 // 범위 선택 START
+
 function updateStartPages(e) {
   if (e.target.value > pages.value || e.target.value < 1 || e.target.value > lastPage.value) {
     e.target.value = startPage.value;
@@ -284,25 +332,20 @@ function resetStartPage(e) {
   e.target.value = startPage.value;
 }
 function resetLastPage(e) {
-  e.target.value = startPage.value;
+  e.target.value = lastPage.value;
 }
 
 function exportRangeHTML() {
   const zip = new JSZip();
   filteredPages.value.forEach((v, i) => {
     const contentHTML = document.querySelector("html").cloneNode(true);
-    const elementsToRemove = contentHTML.querySelectorAll(
-      "#header, .tool-bar, script, style, .pdf_wrap, .v-overlay-container, link[href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css'], link[href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap'], noscript"
-    );
-    const elementsToRemoveClasses = contentHTML.querySelectorAll(".v-application");
-    const elementsToRemoveStyle = contentHTML.querySelectorAll(".v-main");
-    elementsToRemoveClasses.forEach((element) => {
-      element.classList = "";
-    });
-    elementsToRemove.forEach((element) => element.parentNode.removeChild(element));
-    elementsToRemoveStyle.forEach((element) => {
-      element.removeAttribute("style");
-    });
+
+    const elReSelector =
+      "#header, .tool-bar, script, style, .pdf_wrap, .v-overlay-container, link[href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css'], link[href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap'], noscript";
+    const elReClassSelector = ".v-application";
+    const elReStyleSelector = ".v-main";
+
+    removeEl(contentHTML, elReSelector, elReClassSelector, elReStyleSelector);
 
     const _pdf = document.querySelectorAll(".pdf_wrap");
     const pdfWrap = _pdf[i].cloneNode(true);
@@ -364,6 +407,161 @@ export default {
 </script>
 <style scoped></style>
 
-<style lang="css">
+<style lang="scss" scoped>
 @import "../css/pdf/annotationLayer.css";
+.pdfContainer {
+  .header {
+    background-color: #41b883;
+    display: flex;
+    justify-content: center;
+    & > div {
+      display: flex;
+      justify-content: center;
+      input[type="radio"] {
+        display: none;
+        &:checked + label {
+          background-color: #35976b;
+        }
+      }
+      label {
+        display: inline-block;
+        font-size: 1.5rem;
+        padding: 12px;
+        white-space: nowrap;
+        text-wrap: nowrap;
+        word-break: keep-all;
+        cursor: pointer;
+        color: #fff;
+      }
+    }
+    & > ul {
+      font-size: 1.5rem;
+      white-space: nowrap;
+      text-wrap: nowrap;
+      word-break: keep-all;
+      color: #fff;
+      li {
+        padding: 12px;
+      }
+      .file_wrap {
+        &:hover {
+          background-color: #35976b;
+        }
+        input[type="file"] {
+          position: absolute;
+          width: 0;
+          height: 0;
+          padding: 0;
+          overflow: hidden;
+          border: 0;
+        }
+        label {
+          cursor: pointer;
+        }
+      }
+      .page_wrap {
+        button {
+          padding: 0px 7px;
+          border: 1px solid #fff;
+          border-radius: 3px;
+          margin: 0 5px;
+          &:hover {
+            background-color: #35976b;
+          }
+        }
+        input {
+          background-color: #55c592;
+          border: 1px solid #fff;
+          border-radius: 2px;
+          color: #fff;
+          padding-right: 4px;
+          outline: none;
+          &:focus {
+            border-color: #424242;
+          }
+        }
+      }
+      .scale_wrap {
+        button {
+          padding: 0px 7px;
+          border: 1px solid #fff;
+          border-radius: 3px;
+          margin: 0 5px;
+          &:hover {
+            background-color: #35976b;
+          }
+        }
+        span {
+          display: inline-block;
+          width: 40px;
+        }
+      }
+      .choice_wrap {
+        button {
+          padding: 0px 7px;
+          border: 1px solid #fff;
+          border-radius: 3px;
+          margin: 0 5px;
+          &:hover {
+            background-color: #35976b;
+          }
+        }
+      }
+      .export_wrap {
+        cursor: pointer;
+        &:hover {
+          background-color: #35976b;
+        }
+      }
+      .rangePage_wrap {
+        input {
+          width: 50px;
+
+          background-color: #55c592;
+          border: 1px solid #fff;
+          border-radius: 2px;
+          color: #fff;
+          padding-right: 8px;
+          outline: none;
+          text-align: right;
+          &:focus {
+            border-color: #424242;
+          }
+        }
+      }
+    }
+  }
+}
+.loading-container {
+  position: relative;
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  border: 16px solid #f3f3f3; /* 회색 테두리 */
+  border-top: 16px solid #41b883; /* 파란색 테두리 */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite; /* 회전 애니메이션 */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 </style>

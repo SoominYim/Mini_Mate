@@ -1,29 +1,25 @@
 import { createRouter, createWebHistory } from "vue-router";
-import MiniHome from "../views/MiniHome";
-import MiniLunch from "@/views/MiniLunch";
-import MiniCoffee from "@/views/MiniCoffee";
-import MiniPdf from "@/views/MiniPdf";
 
 const routes = [
   {
     path: "/",
     name: "home",
-    component: MiniHome,
+    component: () => import(/* webpackChunkName: "home" */ "../views/MiniHome.vue"),
   },
   {
     path: "/lunch",
     name: "lunch",
-    component: MiniLunch,
+    component: () => import(/* webpackChunkName: "lunch" */ "../views/MiniLunch.vue"),
   },
   {
     path: "/coffee",
     name: "coffee",
-    component: MiniCoffee,
+    component: () => import(/* webpackChunkName: "coffee" */ "../views/MiniCoffee.vue"),
   },
   {
     path: "/pdf",
     name: "pdf",
-    component: MiniPdf,
+    component: () => import(/* webpackChunkName: "pdf" */ "../views/MiniPdf.vue"),
   },
 ];
 

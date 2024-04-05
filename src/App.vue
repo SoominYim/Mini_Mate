@@ -3,7 +3,7 @@
     <div id="header">
       <mini-header></mini-header>
     </div>
-    <v-main>
+    <v-main :style="{ backgroundColor: $route.path === '/pdf' ? '#ccc' : 'inherit' }">
       <router-view />
     </v-main>
   </v-app>
