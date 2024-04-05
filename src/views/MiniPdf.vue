@@ -23,6 +23,7 @@
             :value="page"
             @keydown.enter="changePage"
             @focusout="resetPage"
+            @input="numInput"
             style="width: 50px; text-align: right"
           />
           /
@@ -37,6 +38,7 @@
             :value="startPage"
             @keydown.enter="updateStartPages"
             @focusout="resetStartPage"
+            @input="numInput"
           />
           /
           <input
@@ -45,6 +47,7 @@
             :value="lastPage"
             @keydown.enter="updateLastPages"
             @focusout="resetLastPage"
+            @input="numInput"
           />
         </li>
         <li v-if="isFile" class="scale_wrap">
@@ -402,7 +405,14 @@ export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    numInput(e) {
+      const regex = /[^0-9]/g;
+      if (regex.test(e.target.value)) {
+        e.target.value = e.target.value.replace(regex, "");
+      }
+    },
+  },
 };
 </script>
 <style scoped></style>
