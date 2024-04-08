@@ -75,7 +75,11 @@
       v-if="selectionType == 'range'"
       class="content"
       ref="content"
-      :style="{ width: 'fit-content', margin: '0 auto' }"
+      :style="{
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+      }"
     >
       <div class="pdf_wrap" v-for="page in filteredPages" :key="page">
         <VuePDF @loaded="onLoaded" ref="vuePDFRef" :scale="scale" :pdf="pdf" :page="page" :text-layer="text_layer">
@@ -84,12 +88,7 @@
         ></VuePDF>
       </div>
     </div>
-    <div
-      v-if="selectionType == 'choice'"
-      class="content"
-      ref="content"
-      :style="{ width: 'fit-content', margin: '0 auto' }"
-    >
+    <div v-if="selectionType == 'choice'" class="content" ref="content" :style="{}">
       <div class="pdf_wrap">
         <VuePDF @loaded="onLoaded" ref="vuePDFRef" :scale="scale" :pdf="pdf" :page="page" :text-layer="text_layer"
           ><div class="loading-overlay">
@@ -539,6 +538,17 @@ export default {
           }
         }
       }
+    }
+  }
+  .content {
+    height: 89.5vh;
+    margin: 0px auto;
+    display: flex;
+    justify-content: center;
+    overflow: auto;
+    .pdf_wrap {
+      height: fit-content;
+      margin: 10px;
     }
   }
 }
