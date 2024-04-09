@@ -1,4 +1,5 @@
 <template>
+  <metainfo />
   <v-app>
     <div id="header">
       <mini-header></mini-header>
@@ -11,15 +12,42 @@
 
 <script>
 import MiniHeader from "./components/common/MiniHeader.vue";
+import { useMeta } from "vue-meta";
 
 export default {
   name: "App",
   components: {
     MiniHeader,
   },
-  data: () => ({
-    //
-  }),
+  data() {
+    return {};
+  },
+  setup() {
+    useMeta({
+      title: "미니기여어",
+      meta: [
+        {
+          vmid: "description",
+          name: "description",
+          content: "미니기여어는 다양한 도구를 제공합니다. 점심뽑기, 커피내기 등을 편리하게 이용할 수 있습니다.",
+        },
+        { vmid: "keywords", name: "keywords", content: "tools, 점심뽑기, 커피내기" },
+        { vmid: "og:type", name: "og:type", content: "website" },
+        { vmid: "og:title", name: "og:title", content: "미니기여어" },
+        {
+          vmid: "og:description",
+          name: "og:description",
+          content: "미니기여어는 다양한 도구를 제공합니다. 점심뽑기, 커피내기 등을 편리하게 이용할 수 있습니다.",
+        },
+        { vmid: "og:url", name: "og:url", content: "https://mini-mate.vercel.app/" },
+        { vmid: "robots", name: "robots", content: "All" },
+        { vmid: "language", name: "language", content: "ko-KR" },
+        { vmid: "og:locale", name: "og:locale", content: "ko_KR" },
+        { vmid: "author", name: "author", content: "수빡이" },
+        { vmid: "copyright", name: "copyright", content: `Copyright © ${new Date().getFullYear()} 수빡이` },
+      ],
+    });
+  },
 };
 </script>
 
