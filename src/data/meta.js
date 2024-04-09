@@ -1,7 +1,7 @@
 const meta = {
   home: {
     title: "미니기여어",
-    metaTags: [
+    meta: [
       {
         name: "description",
         content: "날씨, 커피내기, 점심뽑기. PDF TO HTML을 제공하는 미니기여어",
@@ -20,7 +20,7 @@ const meta = {
   },
   lunch: {
     title: "뭐먹지",
-    metaTags: [
+    meta: [
       {
         name: "description",
         content: "점심 뽑기, 점심 랜덤 뽑기, 뭐먹지",
@@ -39,7 +39,7 @@ const meta = {
   },
   coffee: {
     title: "커피사줘",
-    metaTags: [
+    meta: [
       {
         name: "description",
         content: "커피 사는 사람 뽑기",
