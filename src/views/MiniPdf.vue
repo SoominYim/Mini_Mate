@@ -114,10 +114,18 @@
 </template>
 
 <script setup>
+import meta from "@/data/meta";
+import { useMeta } from "vue-meta";
+
 import { ref, computed } from "vue";
 import { VuePDF, usePDF } from "@tato30/vue-pdf";
 import JSZip from "jszip";
 import cssContent from "../css/pdf/style";
+
+useMeta({
+  ...meta.pdf,
+});
+
 const file = ref(null);
 const { pdf, pages } = usePDF(file);
 

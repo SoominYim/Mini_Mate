@@ -33,6 +33,9 @@
 </template>
 
 <script>
+import meta from "@/data/meta";
+import { useMeta } from "vue-meta";
+
 export default {
   name: "MiniCoffee",
   components: {},
@@ -48,7 +51,11 @@ export default {
     };
   },
   computed: {},
-  setup() {},
+  setup() {
+    useMeta({
+      ...meta.coffee,
+    });
+  },
   created() {},
   mounted() {},
   unmounted() {},

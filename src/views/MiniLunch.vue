@@ -55,6 +55,9 @@
   </div>
 </template>
 <script>
+import meta from "@/data/meta";
+import { useMeta } from "vue-meta";
+
 import lunch_store from "@/store/modules/lunch";
 
 export default {
@@ -73,6 +76,11 @@ export default {
       isButtonDisabled: false,
       btnTitle: "뭐 먹지?",
     };
+  },
+  setup() {
+    useMeta({
+      ...meta.lunch,
+    });
   },
   methods: {
     // 라디오 변경 이벤트 시 선택된 라디오 value 값 수정

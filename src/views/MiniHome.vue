@@ -124,9 +124,13 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
+import { useMeta } from "vue-meta";
+import meta from "@/data/meta";
+
 import MiniStar from "@/components/MiniStar.vue";
 import MiniRain from "@/components/MiniRain.vue";
 import MiniSnow from "@/components/MiniSnow.vue";
+
 export default {
   name: "MiniHome",
   components: {
@@ -193,7 +197,11 @@ export default {
       }
     },
   },
-  setup() {},
+  setup() {
+    useMeta({
+      ...meta.home,
+    });
+  },
   created() {
     this.fetchData(); // 현재 날씨 데이터 가져오기
     this.fetchDataDaily(); // 일일 날씨 예보 데이터 가져오기
