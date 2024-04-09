@@ -14,7 +14,14 @@
       <div class="text-center text-h4"><strong>주소가 클립보드에 복사되었습니다.</strong></div>
     </v-snackbar>
   </v-toolbar>
-  <v-navigation-drawer v-model="drawer" color="#424242">
+  <v-navigation-drawer
+    v-model="drawer"
+    disable-resize-watcher="true"
+    disable-route-watcher="true"
+    temporary
+    stateless="true"
+    color="#424242"
+  >
     <v-list>
       <v-list-item class="mb-2" :prepend-avatar="require('@/assets/mini_profile.png')">
         <v-list-item-title class="미니기여어"> {{ currentTitle }} </v-list-item-title>
@@ -71,7 +78,7 @@ export default {
   components: {},
   data() {
     return {
-      drawer: true,
+      drawer: false,
       menuItems: [
         { icon: "mdi-home", link: "/", title: "홈" },
         { icon: "mdi-food", link: "/lunch", title: "뭐 먹 지" },
@@ -98,6 +105,7 @@ export default {
     $route() {
       const foundItem = this.menuItems.find((item) => item.link === window.location.pathname);
       this.currentTitle = foundItem.title === "홈" ? "미니기여어" : foundItem.title;
+      this.drawer = false;
     },
   },
   methods: {

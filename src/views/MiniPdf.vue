@@ -258,7 +258,7 @@ function selectChoicePage() {
 
 function exportChoiceHTML() {
   const zip = new JSZip(); // ZIP 객체 생성
-
+  if (selectedPage.value.length < 1) selectChoicePage();
   selectedPage.value.forEach((v) => {
     // 페이지 별로 HTML 복제 및 수정
     const contentHTML = document.querySelector("html").cloneNode(true);
