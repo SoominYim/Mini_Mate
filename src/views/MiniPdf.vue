@@ -56,7 +56,20 @@
           <button @click="scale = scale < 4 ? scale + 0.5 : scale">+</button>
         </li>
         <li v-if="isFile && selectionType == 'choice'" class="choice_wrap">
-          <span v-for="(p, i) in selectedPage" :key="i">{{ p.page }}</span>
+          <div class="select_wrap">
+            <div class="select" :class="{ open: open }" @click="open = !open">
+              {{ selectedPage.length > 0 ? page : "선택 없음" }}
+            </div>
+            <div class="items" v-if="open">
+              <div v-if="selectedPage.length < 1">선택 없음</div>
+              <div class="item" v-for="(p, i) in selectedPage" :key="i" @click="page = p.page">
+                <div>
+                  {{ p.page }}
+                </div>
+                <button @click="deletePage(i)">X</button>
+              </div>
+            </div>
+          </div>
           <button @click="selectChoicePage">선택</button>
         </li>
 
@@ -249,11 +262,19 @@ const filteredPages = computed(() => {
 function selectChoicePage() {
   const a = document.querySelector("canvas");
   const canvasDataURL = a.toDataURL();
+  const isNewPageUnique = !selectedPage.value.some((item) => item.page === page.value);
+  if (isNewPageUnique) {
+    selectedPage.value.push({
+      page: page.value,
+      data: canvasDataURL,
+    });
+  }
 
-  selectedPage.value.push({
-    page: page.value,
-    data: canvasDataURL,
-  });
+  selectedPage.value.sort((a, b) => a.page - b.page);
+}
+
+function deletePage(i) {
+  selectedPage.value.splice(i, 1);
 }
 
 function exportChoiceHTML() {
@@ -402,7 +423,9 @@ function exportRangeHTML() {
 export default {
   name: "MiniPdf",
   data() {
-    return {};
+    return {
+      open: false,
+    };
   },
   methods: {
     numInput(e) {
@@ -506,13 +529,88 @@ export default {
         }
       }
       .choice_wrap {
-        button {
+        position: relative;
+        width: 190px;
+        & > button {
           padding: 0px 7px;
           border: 1px solid #fff;
           border-radius: 3px;
           margin: 0 5px;
+          margin-left: 120px;
           &:hover {
             background-color: #35976b;
+          }
+        }
+        .select_wrap {
+          .select {
+            position: absolute;
+            top: 11px;
+            left: 7px;
+            width: 98px;
+            font-size: 1.2rem;
+            border: 1px solid #ccc;
+            padding: 3px 10px;
+            border-radius: 5px; /* 드롭다운 모서리 둥글게 */
+            background-color: #35976b;
+            text-align: left;
+            cursor: pointer;
+            &:after {
+              position: absolute;
+              content: "";
+              top: 8px;
+              right: 10px;
+              width: 0;
+              height: 0;
+              border: 5px solid transparent;
+              border-color: #fff transparent transparent transparent;
+            }
+            &.open {
+              border: 1px solid #ad8225;
+              border-radius: 6px 6px 0px 0px;
+            }
+          }
+          .items {
+            overflow: hidden;
+            position: absolute;
+            top: 33px;
+            left: 7px;
+            width: 98px;
+            font-size: 1.2rem;
+            border-right: 1px solid #ad8225;
+            border-left: 1px solid #ad8225;
+            border-bottom: 1px solid #ad8225;
+            border-radius: 0px 0px 6px 6px;
+            background-color: #35976b;
+            cursor: pointer;
+            z-index: 3;
+            .item {
+              display: flex;
+              justify-content: space-around;
+
+              &:not(:last-child) {
+                margin-bottom: 5px;
+              }
+              &:hover {
+                background-color: #2d7e59;
+              }
+              div {
+                width: 50%;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+              button {
+                border: 1px solid #fff;
+                border-radius: 3px;
+                margin-top: 4px;
+                margin-bottom: 4px;
+                padding: 0 5px;
+                &:hover {
+                  background-color: #2d7e59;
+                }
+              }
+            }
           }
         }
       }
