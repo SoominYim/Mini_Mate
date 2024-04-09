@@ -19,13 +19,13 @@ const meta = {
     ],
   },
   lunch: {
-    title: "점심뽑기",
+    title: "뭐먹지",
     metaTags: [
       {
         name: "description",
-        content: "점심 뽑기, 점심 랜덤 뽑기",
+        content: "점심 뽑기, 점심 랜덤 뽑기, 뭐먹지",
       },
-      { name: "keywords", content: "점심, 뽑기, 미니기여어" },
+      { name: "keywords", content: "점심, 뽑기, 미니기여어, 뭐먹지, 점심 랜덤, 점심랜덤뽑기" },
       { name: "subject", content: "점심뽑기" },
       { name: "author", content: "수빡이" },
       { name: "version", content: "version 1.0" },
@@ -38,14 +38,14 @@ const meta = {
     ],
   },
   coffee: {
-    title: "커피 사는 사람 뽑기 페이지",
+    title: "커피사줘",
     metaTags: [
       {
         name: "description",
-        content: "커피 사는 사람, 커피 내기",
+        content: "커피 사는 사람 뽑기",
       },
-      { name: "keywords", content: "커피, 사는 사람, 뽑기, 미니기여어" },
-      { name: "subject", content: "커피내기" },
+      { name: "keywords", content: "커피, 사는 사람, 뽑기, 미니기여어, 커피사줘" },
+      { name: "subject", content: "커피 내기" },
       { name: "author", content: "수빡이" },
       { name: "version", content: "version 1.0" },
       { name: "thanks-to", content: "커피내기" },
@@ -61,7 +61,7 @@ const meta = {
     metaTags: [
       {
         name: "description",
-        content: "PDF TO HTML.",
+        content: "PDF TO HTML, PDF TEXT 변환",
       },
       { name: "keywords", content: "PDF, 변환, PDF TO HTML, pdf.js, vue-pdf-js" },
       { name: "subject", content: "PDF TO HTML" },
