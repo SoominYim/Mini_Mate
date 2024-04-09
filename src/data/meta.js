@@ -23,7 +23,7 @@ const meta = {
     metaTags: [
       {
         name: "description",
-        content: "미니기여어는 다양한 도구를 제공합니다. 점심뽑기, 커피내기 등을 편리하게 이용할 수 있습니다.",
+        content: "점심 뽑기, 점심 랜덤 뽑기",
       },
       { name: "keywords", content: "점심, 뽑기, 미니기여어" },
       { name: "subject", content: "점심뽑기" },
