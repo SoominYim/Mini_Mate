@@ -264,8 +264,11 @@ function selectChoicePage() {
   const a = document.querySelector("canvas");
   const canvasDataURL = a.toDataURL();
   const isNewPageUnique = !selectedPage.value.some((item) => item.page === page.value);
+  const contentHTML = document.querySelector("html").cloneNode(true);
   if (isNewPageUnique) {
+    const clonedHTML = contentHTML.cloneNode(true);
     selectedPage.value.push({
+      html: clonedHTML,
       page: page.value,
       data: canvasDataURL,
     });
@@ -293,7 +296,7 @@ function exportChoiceHTML() {
   if (selectedPage.value.length < 1) selectChoicePage();
   selectedPage.value.forEach((v) => {
     // 페이지 별로 HTML 복제 및 수정
-    const contentHTML = document.querySelector("html").cloneNode(true);
+    const contentHTML = v.html;
 
     modifyHTML(contentHTML, v.page);
 

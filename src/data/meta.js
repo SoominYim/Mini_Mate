@@ -58,7 +58,7 @@ const meta = {
   },
   pdf: {
     title: "PDF TO HTML",
-    metaTags: [
+    meta: [
       {
         name: "description",
         content: "PDF TO HTML, PDF TEXT 변환",
