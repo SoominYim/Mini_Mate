@@ -278,26 +278,29 @@ function deletePage(i) {
   selectedPage.value.splice(i, 1);
 }
 
+function modifyHTML(contentHTML, page) {
+  const elReSelector =
+    "#header, .header, script, style, .v-overlay-container, link[href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css'], link[href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap'], noscript, meta";
+  const elReClassSelector = ".v-application";
+  const elReStyleSelector = ".v-main";
+
+  removeEl(contentHTML, elReSelector, elReClassSelector, elReStyleSelector);
+  contentHTML.querySelector("title").textContent = `${fileName.value}_${String(page).padStart(3, "0")}`;
+}
+
 function exportChoiceHTML() {
   const zip = new JSZip(); // ZIP 객체 생성
   if (selectedPage.value.length < 1) selectChoicePage();
   selectedPage.value.forEach((v) => {
     // 페이지 별로 HTML 복제 및 수정
     const contentHTML = document.querySelector("html").cloneNode(true);
-    const elReSelector =
-      "#header, .header, script, style, .v-overlay-container, link[href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css'], link[href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap'], noscript, meta";
-    const elReClassSelector = ".v-application";
-    const elReStyleSelector = ".v-main";
 
-    removeEl(contentHTML, elReSelector, elReClassSelector, elReStyleSelector);
+    modifyHTML(contentHTML, v.page);
 
     const linkElement = document.createElement("link");
     linkElement.rel = "stylesheet";
     linkElement.href = "./css/common.css";
     contentHTML.querySelector("head").appendChild(linkElement);
-
-    // 페이지 제목 설정
-    contentHTML.querySelector("title").textContent = `${fileName.value}_${String(v.page).padStart(3, "0")}`;
 
     // 스크립트 직접 추가
     const scriptContent = `

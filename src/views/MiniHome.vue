@@ -198,11 +198,6 @@ export default {
     },
   },
   setup() {
-    console.log(
-      useMeta({
-        ...meta.home,
-      })
-    );
     useMeta({
       ...meta.home,
     });
