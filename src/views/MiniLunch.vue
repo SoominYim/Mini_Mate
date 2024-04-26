@@ -55,85 +55,87 @@
   </div>
 </template>
 <script>
-import meta from "@/data/meta";
-import { useMeta } from "vue-meta";
+  import meta from "@/data/meta";
+  import { useMeta } from "vue-meta";
 
-import lunch_store from "@/store/modules/lunch";
+  import lunch_store from "@/store/modules/lunch";
 
-export default {
-  components: {},
-  data() {
-    const { allFood, menu, selectedFood } = lunch_store.state;
+  export default {
+    components: {},
+    data() {
+      const { allFood, menu, selectedFood } = lunch_store.state;
 
-    return {
-      // 음식
-      foods: allFood.foods,
-      selectedFood: selectedFood.selectedFood,
-      selectedCountry: selectedFood.selectedCountry,
-      groupedIndexes: menu.groupedIndexes,
+      return {
+        // 음식
+        foods: allFood.foods,
+        selectedFood: selectedFood.selectedFood,
+        selectedCountry: selectedFood.selectedCountry,
+        groupedIndexes: menu.groupedIndexes,
 
-      displayText: "종류를 선택하세요",
-      isButtonDisabled: false,
-      btnTitle: "뭐 먹지?",
-    };
-  },
-  setup() {
-    useMeta({
-      ...meta.lunch,
-    });
-  },
-  methods: {
-    // 라디오 변경 이벤트 시 선택된 라디오 value 값 수정
-    radioChange(event) {
-      this.selectedCountry = event.target.value;
+        displayText: "종류를 선택하세요",
+        isButtonDisabled: false,
+        btnTitle: "뭐 먹지?",
+      };
     },
-    submitSelect() {
-      const getRandomFood = (foods) => foods[Math.floor(Math.random() * foods.length)];
-
-      const choices = ["all", "korean", "chinese", "japanese", "western", "asian"];
-      choices.forEach((choice) => {
-        this[`${choice}Foods`] = [];
-        if (choice !== "all")
-          this[`${choice}ChoiceFood`] = getRandomFood(this.foods.filter((food) => food.country === choice));
-        else this.allChoiceFood = getRandomFood(this.foods);
+    setup() {
+      useMeta({
+        ...meta.lunch,
       });
-
-      this.selectedFood =
-        this.selectedCountry === "all" ? this.allChoiceFood.food : this[`${this.selectedCountry}ChoiceFood`].food;
-
-      this.displayText = "뽑는중...";
-      this.btnTitle = "뽑는중...";
-      this.isButtonDisabled = true;
-      setTimeout(() => {
-        this.displayText = this.selectedFood;
-        this.isButtonDisabled = false;
-        this.btnTitle = "다시 뽑기";
-      }, 2000);
     },
-  },
-  created() {},
-  computed: {
-    // 라디오 체크 되어있나 확인
-    selectActive() {
-      return this.selectedCountry !== "";
+    methods: {
+      radioChange(event) {
+        this.selectedCountry = event.target.value;
+      },
+
+      submitSelect() {
+        const getRandomFood = (foods) => foods[Math.floor(Math.random() * foods.length)];
+
+        const choices = ["all", "korean", "chinese", "japanese", "western", "asian"];
+        choices.forEach((choice) => {
+          this[`${choice}Foods`] = [];
+          if (choice !== "all")
+            this[`${choice}ChoiceFood`] = getRandomFood(this.foods.filter((food) => food.country === choice));
+          else this.allChoiceFood = getRandomFood(this.foods);
+        });
+
+        this.selectedFood =
+          this.selectedCountry === "all" ? this.allChoiceFood.food : this[`${this.selectedCountry}ChoiceFood`].food;
+        console.log(this.selectedFoods);
+        console.log(this.selectedFood);
+
+        this.displayText = "뽑는중...";
+        this.btnTitle = "뽑는중...";
+        this.isButtonDisabled = true;
+        setTimeout(() => {
+          this.displayText = this.selectedFood;
+          this.isButtonDisabled = false;
+          this.btnTitle = "다시 뽑기";
+        }, 2000);
+      },
     },
-  },
-  mounted() {
-    // 새로운 나라 추가시 푸시 (store에 country 추가시 자동 푸시)
-    const groupedIndexes = {};
-    for (let i = 0; i < this.foods.length; i++) {
-      const food = this.foods[i];
-      const country = food.country;
-      groupedIndexes[country] = [];
-      groupedIndexes[country].push(i);
-    }
-    // 각 country 별 index 및 object data() 바인딩
-    const menuIdx = Object.keys({ ...groupedIndexes }).length;
-    this.menuIdx = menuIdx;
-    this.groupedIndexes = { ...groupedIndexes };
-  },
-};
+    created() {},
+    computed: {
+      // 라디오 체크 되어있나 확인
+      selectActive() {
+        return this.selectedCountry !== "";
+      },
+    },
+    mounted() {
+      // 새로운 나라 추가시 푸시 (store에 country 추가시 자동 푸시)
+      const groupedIndexes = {};
+      for (let i = 0; i < this.foods.length; i++) {
+        const food = this.foods[i];
+        const country = food.country;
+        groupedIndexes[country] = [];
+        groupedIndexes[country].push(i);
+      }
+      // 각 country 별 index 및 object data() 바인딩
+      const menuIdx = Object.keys({ ...groupedIndexes }).length;
+      this.menuIdx = menuIdx;
+      this.groupedIndexes = { ...groupedIndexes };
+    },
+  };
 </script>
 <style lang="scss" scoped>
-@import url("../css/lunch.scss");
+  @import url("../css/lunch.scss");
 </style>

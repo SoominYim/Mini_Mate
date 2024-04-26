@@ -13,15 +13,6 @@ const lunchStore = createStore({
         westernFoods: [],
         asianFoods: [],
       },
-      // 랜덤 선택된 음식
-      randomSelectedFood: {
-        allChoiceFood: "",
-        koreanChoiceFood: "",
-        chineseChoiceFood: "",
-        japaneseChoiceFood: "",
-        westernChoiceFood: "",
-        asianChoiceFood: "",
-      },
       // 메뉴
       menu: {
         menuIdx: "",
